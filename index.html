@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stanislas Sassolas</title>
+<meta name="description" content="Data & AI engineer (CPE Lyon, ex-Meelo). Looking for a 6-month Data Science / ML / AI internship in Latin America from February 2027.">
+<meta property="og:title" content="Stanislas Sassolas — Data & AI engineer">
+<meta property="og:description" content="Machine-learning and LLM tools that hold up on real data. Open to a 6-month internship in Latin America from February 2027.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F1F3EF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23ffffff'/%3E%3Crect x='6' y='9' width='20' height='6' fill='%23ffffff' stroke='%23d7d7d7'/%3E%3Crect x='6' y='17' width='20' height='6' fill='%23D3263A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: a survey map. Full-width contour "loss surface" with a title cartouche,
+   then a two-column field sheet: a sticky legend on the left, the work on the right. */
+:root{
+  --paper:#F1F3EF;        /* map paper, cool with a green bias */
+  --paper-2:#E7EBE5;      /* sunken surfaces */
+  --ink:#16211E;          /* text and actual values */
+  --muted:#5A6661;        /* secondary text */
+  --rule:#D3D9D2;         /* hairlines */
+  --contour:#A6845C;      /* bistre, the colour of printed contour lines */
+  --trail:#D3263A;        /* GR trail-marker red */
+  --water:#2C6E8E;        /* rivers, rain, predictions */
+  --display:"Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --body:"Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --step--1:clamp(.8rem,.78rem + .1vw,.86rem);
+  --step-0:clamp(1rem,.96rem + .2vw,1.08rem);
+  --step-1:clamp(1.2rem,1.1rem + .5vw,1.45rem);
+  --step-2:clamp(1.5rem,1.3rem + 1vw,2.1rem);
+  --step-4:clamp(2.6rem,1.6rem + 5vw,5.6rem);
+  --gutter:clamp(16px,4vw,48px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1614; --paper-2:#16201D; --ink:#E3E9E4; --muted:#93A19B; --rule:#25312D;
+    --contour:#8F7652; --trail:#F04A5B; --water:#71B3D2; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1614; --paper-2:#16201D; --ink:#E3E9E4; --muted:#93A19B; --rule:#25312D;
+  --contour:#8F7652; --trail:#F04A5B; --water:#71B3D2; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 var(--step-0)/1.62 var(--body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:.2em}
+a:hover{color:var(--trail)}
+:focus-visible{outline:2px solid var(--trail);outline-offset:3px;border-radius:2px}
+img{max-width:100%;display:block}
+.mono{font-family:var(--mono);font-size:var(--step--1);letter-spacing:.01em}
+.label{font:500 .72rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* GR balise: the red-and-white trail marker */
+.balise{display:inline-grid;grid-template-rows:1fr 1fr;width:18px;height:11px;flex:none;border-radius:1px;overflow:hidden;box-shadow:0 0 0 1px var(--rule)}
+.balise::before{content:"";background:#fff}
+.balise::after{content:"";background:var(--trail)}
+
+/* Top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.top-in{display:flex;align-items:center;gap:20px;height:56px;padding-inline:var(--gutter);max-width:1360px;margin:0 auto}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 1rem/1 var(--display);font-variation-settings:"wdth" 85;letter-spacing:-.01em}
+.top nav{display:flex;gap:22px;margin-left:auto}
+.top nav a{font:500 .78rem/1 var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-decoration:none}
+.top nav a:hover{color:var(--ink)}
+.switch{display:flex;gap:4px}
+.switch button{appearance:none;border:1px solid var(--rule);background:transparent;color:var(--muted);font:500 .74rem/1 var(--mono);padding:7px 9px;border-radius:6px;cursor:pointer;letter-spacing:.06em}
+.switch button[aria-pressed="true"]{color:var(--ink);border-color:var(--ink)}
+.switch button:hover{color:var(--ink)}
+@media (max-width:760px){.top nav{display:none}.switch{margin-left:auto}}
+
+/* Hero map */
+.map{position:relative;border-bottom:1px solid var(--rule);overflow:hidden;background:var(--paper)}
+#terrain{display:block;width:100%;height:clamp(600px,82vh,780px);cursor:crosshair;touch-action:manipulation}
+.cartouche{position:absolute;left:var(--gutter);bottom:clamp(20px,4vw,44px);max-width:min(640px,calc(100% - 2*var(--gutter)));padding:clamp(18px,2.4vw,28px);background:color-mix(in srgb,var(--paper) 92%,transparent);border:1px solid var(--ink);box-shadow:6px 6px 0 color-mix(in srgb,var(--ink) 12%,transparent)}
+.coords{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 14px}
+.coords .arrow{color:var(--trail)}
+h1{font:800 var(--step-4)/.9 var(--display);font-variation-settings:"wdth" 78,"opsz" 96;letter-spacing:-.03em;margin:0;text-wrap:balance}
+.role{font:600 var(--step-1)/1.25 var(--display);font-variation-settings:"wdth" 90;margin:14px 0 8px;letter-spacing:-.01em}
+.lede{margin:0;color:var(--muted);max-width:58ch}
+.status{display:inline-flex;align-items:center;gap:10px;margin-top:16px;font:500 .8rem/1.35 var(--mono);color:var(--ink)}
+.cta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--ink);border-radius:999px;font:500 .9rem/1 var(--body);text-decoration:none;color:var(--ink);background:transparent;cursor:pointer;transition:background .15s,color .15s}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid:hover{background:var(--trail);border-color:var(--trail);color:#fff}
+.readout{position:absolute;top:16px;right:var(--gutter);width:min(330px,calc(100% - 2*var(--gutter)));padding:12px 14px;background:color-mix(in srgb,var(--paper) 90%,transparent);border:1px solid var(--rule);font:400 .74rem/1.55 var(--mono);color:var(--muted)}
+.readout b{color:var(--ink);font-weight:500}
+.readout .row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.readout button{margin-top:8px;appearance:none;background:none;border:0;padding:0;color:var(--trail);font:500 .74rem/1.4 var(--mono);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:760px){
+  #terrain{height:340px}
+  .cartouche{position:relative;left:auto;bottom:auto;max-width:none;margin:-40px 16px 24px;box-shadow:4px 4px 0 color-mix(in srgb,var(--ink) 12%,transparent)}
+  .readout{top:12px;right:12px;width:auto;max-width:calc(100% - 24px)}
+  .readout .hint,.readout .r-head,.readout .r-cur{display:none}
+  .readout{padding:8px 10px;min-width:170px}
+  .readout button{margin-top:4px}
+}
+
+/* Field sheet */
+.sheet{display:grid;grid-template-columns:220px minmax(0,1fr);gap:clamp(24px,5vw,72px);max-width:1360px;margin:0 auto;padding-inline:var(--gutter);padding-block:clamp(40px,7vw,96px)}
+.legend{position:sticky;top:calc(env(safe-area-inset-top,0px) + 88px);align-self:start;display:grid;gap:22px}
+.legend ol{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.legend a{display:flex;gap:12px;align-items:baseline;text-decoration:none;color:var(--muted);font:500 .8rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.legend a .k{display:inline-block;width:22px;height:0;border-top:2px solid var(--contour);transform:translateY(-3px)}
+.legend a.on,.legend a:hover{color:var(--ink)}
+.legend a.on .k{border-color:var(--trail);border-top-width:3px}
+.key{display:grid;gap:8px;padding-top:18px;border-top:1px solid var(--rule)}
+.key div{display:flex;gap:10px;align-items:center;font:.74rem/1.3 var(--mono);color:var(--muted)}
+.key i{display:inline-block;width:26px;flex:none}
+.key .c1{border-top:1px solid var(--contour)}
+.key .c2{border-top:2px solid var(--contour)}
+.key .tr{height:4px;background:repeating-linear-gradient(90deg,var(--trail) 0 7px,#fff 7px 11px);box-shadow:0 0 0 1px color-mix(in srgb,var(--trail) 40%,transparent)}
+@media (max-width:900px){.sheet{grid-template-columns:minmax(0,1fr)}.legend{display:none}}
+
+section{scroll-margin-top:80px}
+section+section{margin-top:clamp(64px,9vw,120px)}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-bottom:1px solid var(--ink);padding-bottom:10px;margin-bottom:clamp(28px,4vw,44px)}
+h2{font:700 var(--step-2)/1.05 var(--display);font-variation-settings:"wdth" 82;letter-spacing:-.02em;margin:0}
+
+/* Projects */
+.case{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+.case+.case{margin-top:clamp(56px,7vw,88px);padding-top:clamp(36px,5vw,56px);border-top:1px solid var(--rule)}
+.case-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 24px;align-items:end}
+h3{font:700 var(--step-2)/1 var(--display);font-variation-settings:"wdth" 80;letter-spacing:-.02em;margin:0}
+.q{font:400 italic var(--step-1)/1.3 var(--body);color:var(--muted);margin:6px 0 0;grid-column:1}
+.case-links{display:flex;gap:14px;font:500 .8rem/1 var(--mono);grid-row:1/span 2;grid-column:2;align-self:start;padding-top:8px}
+.case-links a{text-decoration:none;border-bottom:1px solid var(--trail);padding-bottom:3px}
+.case-body{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.case-body p{margin:0 0 14px;max-width:62ch}
+.meta{font:.78rem/1.6 var(--mono);color:var(--muted);margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{font:.74rem/1 var(--mono);padding:6px 8px;border:1px solid var(--rule);border-radius:4px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.stat{padding:14px 14px 14px 0}
+.stat+.stat{padding-left:14px;border-left:1px solid var(--rule)}
+.stat b{display:block;font:700 clamp(1.5rem,1.1rem + 1.6vw,2.3rem)/1 var(--display);font-variation-settings:"wdth" 80;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{display:block;margin-top:6px;font:.72rem/1.35 var(--mono);color:var(--muted)}
+.fig{margin:0;min-width:0}
+.fig figcaption{font:.76rem/1.5 var(--mono);color:var(--muted);margin-top:10px;font-variant-numeric:tabular-nums}
+.fig figcaption b{color:var(--ink);font-weight:500}
+.panel{border:1px solid var(--rule);background:var(--paper-2);padding:12px}
+@media (max-width:980px){.case-body{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.case-head{grid-template-columns:minmax(0,1fr)}.case-links{grid-row:auto;grid-column:1;padding-top:4px}.stat{padding-right:8px}.stat+.stat{padding-left:10px}.stat b{font-size:1.35rem}.stat span{font-size:.66rem}}
+
+/* Chart */
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .axis text{font:10px var(--mono);fill:var(--muted)}
+.chart .grid line{stroke:var(--rule);stroke-width:1}
+.legend-inline{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:8px;font:.74rem/1 var(--mono);color:var(--muted)}
+.legend-inline span{display:inline-flex;gap:6px;align-items:center}
+.legend-inline i{display:inline-block;width:18px;height:0}
+
+/* Confusion matrix */
+.cm{display:grid;grid-template-columns:auto repeat(5,minmax(0,1fr));gap:3px;font:.74rem/1 var(--mono)}
+.cm .h{color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px 2px;font-size:.66rem;line-height:1.2}
+.cm .rh{justify-content:flex-end;text-align:right;padding-right:8px}
+.cm .cell{aspect-ratio:1.25;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:2px;cursor:default;font-variant-numeric:tabular-nums;transition:outline-color .1s;outline:2px solid transparent;outline-offset:-2px}
+.cm .cell small{font-size:.62rem;opacity:.75}
+.cm .cell.diag{box-shadow:inset 0 0 0 1px var(--ink)}
+.cm .cell.hot{outline-color:var(--trail)}
+.cm .corner{font-size:.6rem;color:var(--muted);display:flex;align-items:flex-end;justify-content:flex-end;padding:0 8px 4px 0;line-height:1.3;text-align:right}
+.bars{display:grid;gap:8px;margin:18px 0 16px}
+.bar{display:grid;grid-template-columns:96px minmax(0,1fr) 52px;gap:10px;align-items:center;font:.74rem/1 var(--mono)}
+.bar .track{height:10px;background:var(--paper);border:1px solid var(--rule);position:relative}
+.bar .fill{position:absolute;inset:0 auto 0 0;background:var(--contour)}
+.bar.best .fill{background:var(--ink)}
+.bar .v{text-align:right;font-variant-numeric:tabular-nums}
+
+.sharpe{display:grid;gap:14px}
+.sh-asset{display:grid;gap:5px}
+.sh-asset b{font:600 .8rem/1 var(--mono)}
+.sh-row{display:grid;grid-template-columns:118px minmax(0,1fr) 44px;gap:8px;align-items:center;font:.72rem/1 var(--mono);color:var(--muted)}
+.sh-track{height:9px;position:relative;background:var(--paper);border:1px solid var(--rule)}
+.sh-fill{position:absolute;inset:0 auto 0 0}
+.sh-row .v{text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+.sh-legend{display:flex;gap:14px;font:.72rem/1 var(--mono);color:var(--muted)}
+.sh-legend i{display:inline-block;width:12px;height:9px;margin-right:6px;vertical-align:-1px}
+
+/* Duo sketch pad */
+.pad-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+#pad{width:100%;aspect-ratio:4/3;max-width:100%;background:var(--paper);border:1px solid var(--rule);touch-action:none;cursor:crosshair;display:block}
+.pad-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+.pad-bar button{appearance:none;border:1px solid var(--rule);background:transparent;color:var(--ink);font:500 .74rem/1 var(--mono);padding:7px 10px;border-radius:4px;cursor:pointer}
+.pad-bar button:hover{border-color:var(--ink)}
+
+/* Planned route */
+.planned{margin-top:clamp(56px,7vw,88px);padding:clamp(20px,3vw,32px);border:1.5px dashed var(--trail);display:grid;gap:10px}
+.planned h3{font-size:var(--step-1)}
+.planned p{margin:0;max-width:66ch;color:var(--muted)}
+
+/* Path */
+.path{list-style:none;margin:0;padding:0;position:relative}
+.path::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;border-left:2px dashed color-mix(in srgb,var(--trail) 55%,transparent)}
+.stop{display:grid;grid-template-columns:18px 150px minmax(0,1fr);gap:0 22px;padding-bottom:30px}
+.stop .pin{margin-top:6px}
+.stop .when{font:.8rem/1.6 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums;padding-top:1px}
+.stop h3{font-size:var(--step-1);font-variation-settings:"wdth" 88;line-height:1.2}
+.stop .org{font:.82rem/1.5 var(--mono);color:var(--muted);margin:2px 0 8px}
+.stop ul{margin:0;padding-left:18px;max-width:64ch}
+.stop li{margin-bottom:4px}
+.stop li::marker{color:var(--contour)}
+@media (max-width:620px){.stop{grid-template-columns:18px minmax(0,1fr)}.stop .when{grid-column:2}.stop .what{grid-column:2}}
+
+/* Off the map */
+.offmap{display:grid;grid-template-columns:200px minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+.portrait{width:100%;aspect-ratio:4/5;object-fit:cover;filter:grayscale(1) contrast(1.05);border:1px solid var(--ink)}
+.offmap p{margin:0 0 16px;max-width:62ch}
+.elev{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);margin-top:8px}
+.elev div{padding:14px 14px 0 0}
+.elev div+div{padding-left:14px;border-left:1px solid var(--rule)}
+.elev b{display:block;font:700 var(--step-2)/1 var(--display);font-variation-settings:"wdth" 80;letter-spacing:-.02em}
+.elev span{display:block;margin-top:6px;font:.72rem/1.4 var(--mono);color:var(--muted)}
+.langs{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font:.8rem/1.4 var(--mono)}
+.langs span b{font-weight:500}
+.langs span em{font-style:normal;color:var(--muted)}
+@media (max-width:620px){.offmap{grid-template-columns:minmax(0,1fr)}.portrait{max-width:180px}.elev div{padding-right:8px}.elev div+div{padding-left:10px}.elev b{font-size:1.25rem}}
+
+/* Contact */
+.contact p{max-width:60ch;margin:0 0 22px;font-size:var(--step-1);line-height:1.45}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:18px}
+.mail code{font:500 clamp(1.05rem,.9rem + 1vw,1.6rem)/1.2 var(--mono);user-select:all;word-break:break-all}
+footer{border-top:1px solid var(--rule)}
+footer .in{max-width:1360px;margin:0 auto;padding-inline:var(--gutter);padding-block:26px 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font:.74rem/1.5 var(--mono);color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="mark" href="#top" aria-label="Stanislas Sassolas, back to top"><span class="balise" aria-hidden="true"></span>S. Sassolas</a>
+    <nav aria-label="Sections">
+      <a href="#work" data-i="nav.work">Work</a>
+      <a href="#path" data-i="nav.path">Path</a>
+      <a href="#offmap" data-i="nav.off">Off the map</a>
+      <a href="#contact" data-i="nav.contact">Contact</a>
+    </nav>
+    <div class="switch" role="group" aria-label="Language and theme">
+      <button type="button" id="lang-en" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" id="lang-es" data-lang="es" aria-pressed="false">ES</button>
+      <button type="button" id="theme" aria-label="Toggle dark mode">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="map">
+    <canvas id="terrain" aria-label="Topographic map of a synthetic loss surface, with a red gradient-descent trail"></canvas>
+
+    <div class="readout" aria-live="polite">
+      <div class="row r-head"><span data-i="ro.title">LOSS SURFACE</span><span data-i="ro.interval">interval 0.04</span></div>
+      <div class="row"><span data-i="ro.step">descent step</span><b id="ro-step">000</b></div>
+      <div class="row"><span data-i="ro.loss">loss</span><b id="ro-loss">—</b></div>
+      <div class="row r-cur"><span data-i="ro.cursor">under cursor</span><b id="ro-cursor">—</b></div>
+      <div class="hint" data-i="ro.hint">Gradient descent with momentum. Click the map to start a new descent from there.</div>
+      <button type="button" id="new-descent" data-i="ro.btn">New random descent</button>
+    </div>
+
+    <div class="cartouche">
+      <p class="coords mono"><span>45°45′N 4°50′E · Lyon</span><span class="arrow" aria-hidden="true">→</span><span>12°03′S 77°03′W · Lima</span></p>
+      <h1>Stanislas Sassolas</h1>
+      <p class="role" data-i="hero.role">Data &amp; AI engineer</p>
+      <p class="lede" data-i="hero.lede">I build machine-learning and LLM tools that hold up on real data. At Meelo, a fraud-detection fintech, I built an AI agent that automates the analysis of 150K+ business cases, after benchmarking 8 LLMs.</p>
+      <p class="status"><span class="balise" aria-hidden="true"></span><span data-i="hero.status">Open to a 6-month internship · Latin America · from Feb 2027</span></p>
+      <div class="cta">
+        <a class="btn solid" href="#work" data-i="hero.cta">See the work</a>
+        <a class="btn" id="cv" href="cv/StanislasSassolas-CV-EN.pdf" data-i="hero.cv">CV (PDF)</a>
+        <a class="btn" href="https://github.com/stanislas-sassolas">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/stanislas-sassolas">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <aside class="legend" aria-label="Legend">
+      <ol>
+        <li><a href="#work" data-sec="work"><span class="k"></span><span data-i="nav.work">Work</span></a></li>
+        <li><a href="#path" data-sec="path"><span class="k"></span><span data-i="nav.path">Path</span></a></li>
+        <li><a href="#offmap" data-sec="offmap"><span class="k"></span><span data-i="nav.off">Off the map</span></a></li>
+        <li><a href="#contact" data-sec="contact"><span class="k"></span><span data-i="nav.contact">Contact</span></a></li>
+      </ol>
+      <div class="key" aria-label="Map key">
+        <span class="label" data-i="key.title">Map key</span>
+        <div><i class="c1"></i><span data-i="key.c1">contour, every 0.04</span></div>
+        <div><i class="c2"></i><span data-i="key.c2">index contour, every 0.20</span></div>
+        <div><i class="tr"></i><span data-i="key.tr">descent trail</span></div>
+      </div>
+    </aside>
+
+    <div>
+      <!-- WORK -->
+      <section id="work" aria-labelledby="work-h">
+        <div class="sec-head"><h2 id="work-h" data-i="work.h">Selected work</h2><span class="label" data-i="work.n">4 projects · 1 planned</span></div>
+
+        <article class="case">
+          <div class="case-head">
+            <h3>MeteoVelo</h3>
+            <p class="q" data-i="p1.q">How much does the weather change bike traffic in Lyon?</p>
+            <div class="case-links"><a href="https://github.com/stanislas-sassolas/meteovelo-lyon" data-i="link.code">Code &amp; report ↗</a></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>0.95</b><span data-i="p1.s1">R² on a week the model never saw</span></div>
+            <div class="stat"><b>1,350</b><span data-i="p1.s2">bikes/h mean absolute error</span></div>
+            <div class="stat"><b>−33 %</b><span data-i="p1.s3">RMSE vs. same hour last week</span></div>
+          </div>
+          <div class="case-body">
+            <div>
+              <p data-i="p1.a">I merged 263,000 hourly counts from 376 bike counters with Lyon's open temperature and rain sensors in PySpark, then compared four Spark MLlib models. Gradient-boosted trees won.</p>
+              <p data-i="p1.b">A random split on hourly data lets a model peek at the days it is tested on, so I re-validated the result on a strictly later week, against a naive baseline. It held. The figure is that week, hour by hour.</p>
+              <p class="meta" data-i="p1.meta">CPE Lyon Big Data project · team of 5 · I built the ML pipeline and the validation · Dec 2025</p>
+              <div class="chips"><span class="chip">PySpark</span><span class="chip">Spark MLlib</span><span class="chip">scikit-learn</span><span class="chip" data-i="chip.open">Open data</span></div>
+            </div>
+            <figure class="fig chart">
+              <div class="legend-inline"><span><i style="border-top:2px solid var(--ink)"></i><span data-i="p1.la">actual</span></span><span><i style="border-top:2px dashed var(--water)"></i><span data-i="p1.lp">predicted</span></span><span><i style="border-top:6px solid color-mix(in srgb,var(--water) 45%,transparent)"></i><span data-i="p1.lr">rain</span></span></div>
+              <div id="velo"></div>
+              <figcaption id="velo-cap">&nbsp;</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <article class="case">
+          <div class="case-head">
+            <h3 data-i="p2.t">COVID-19 tweet sentiment</h3>
+            <p class="q" data-i="p2.q">Can a model tell “negative” from “extremely negative”?</p>
+            <div class="case-links"><a href="https://github.com/stanislas-sassolas/covid-tweet-sentiment" data-i="link.code">Code &amp; report ↗</a></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>78.0 %</b><span data-i="p2.s1">accuracy on 5 classes</span></div>
+            <div class="stat"><b>86.6 %</b><span data-i="p2.s2">accuracy on 3 classes</span></div>
+            <div class="stat"><b>+24 pts</b><span data-i="p2.s3">over a TF-IDF baseline</span></div>
+          </div>
+          <div class="case-body">
+            <div>
+              <p data-i="p2.a">Five-class sentiment on 45,000 tweets from March and April 2020. I compared four Keras networks with a TF-IDF and logistic-regression baseline, early-stopping on a validation split so the test set is used only once.</p>
+              <p data-i="p2.b">On polarity alone the linear baseline is already decent. Intensity is where sequence models earn their keep, and where most of the remaining errors are.</p>
+              <div class="bars" id="bars" aria-label="Test accuracy by model, 5 classes"></div>
+              <p class="meta" data-i="p2.meta">CPE Lyon deep-learning project · re-run and extended in 2026</p>
+              <div class="chips"><span class="chip">TensorFlow / Keras</span><span class="chip">scikit-learn</span><span class="chip">NLP</span></div>
+            </div>
+            <figure class="fig">
+              <div class="panel"><div class="cm" id="cm" role="table" aria-label="Confusion matrix, CNN+LSTM, test set"></div></div>
+              <figcaption id="cm-cap">&nbsp;</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <article class="case">
+          <div class="case-head">
+            <h3>Duo</h3>
+            <p class="q" data-i="p3.q">A private drawing app for two people.</p>
+            <div class="case-links"><a href="https://github.com/stanislas-sassolas/duo" data-i="link.code2">Code ↗</a></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>9k</b><span data-i="p3.s1">lines of Dart</span></div>
+            <div class="stat"><b>64</b><span data-i="p3.s2">tests (39 unit, 25 security rules)</span></div>
+            <div class="stat"><b>v1.4</b><span data-i="p3.s3">released on Android</span></div>
+          </div>
+          <div class="case-body">
+            <div>
+              <p data-i="p3.a">One person draws and taps Send. The other sees it replayed stroke by stroke a few seconds later. Flutter and Firebase, with an offline queue, a home-screen widget, and Firestore security rules that act as the whole backend.</p>
+              <p data-i="p3.b">Drawings are stored as vectors. A finger on a 120 Hz screen produces far more points than a stroke needs, and a Firestore document is capped at 1 MiB, so each stroke is simplified with the Ramer–Douglas–Peucker algorithm before upload. Draw in the box to watch it work.</p>
+              <p class="meta" data-i="p3.meta">Personal project · designed, built and shipped alone · Sep 2026</p>
+              <div class="chips"><span class="chip">Flutter</span><span class="chip">Riverpod</span><span class="chip">Firebase</span><span class="chip">Kotlin</span></div>
+            </div>
+            <figure class="fig pad-wrap">
+              <canvas id="pad" aria-label="Drawing pad: draw a stroke to see it simplified"></canvas>
+              <div class="pad-bar"><span class="mono" id="pad-cap">&nbsp;</span><button type="button" id="pad-clear" data-i="p3.clear">Clear</button></div>
+            </figure>
+          </div>
+        </article>
+
+        <article class="case">
+          <div class="case-head">
+            <h3 data-i="p5.t">RL trading agent</h3>
+            <p class="q" data-i="p5.q">Can a PPO agent beat buy &amp; hold once fees are paid?</p>
+            <div class="case-links"><a href="https://github.com/stanislas-sassolas/rl-trading-agent" data-i="link.code">Code &amp; report ↗</a></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>9</b><span data-i="p5.s1">agents: 3 assets × 3 seeds</span></div>
+            <div class="stat"><b>0 / 3</b><span data-i="p5.s2">assets where it beats buy &amp; hold on unseen 2025 data</span></div>
+            <div class="stat"><b>0.1&#8239;%</b><span data-i="p5.s3">fee charged on every trade</span></div>
+          </div>
+          <div class="case-body">
+            <div>
+              <p data-i="p5.a">PPO agents decide every hour whether to be invested or in cash, on hourly BTC, ETH and gold data. Features use the past only, and their scaling is fitted on the training years alone.</p>
+              <p data-i="p5.b">The agents beat buy &amp; hold on the validation year used to pick them, then lose to it on 2025, which they never saw. The write-up explains why: selection bias from keeping the best checkpoint, agents that mostly learned to stay invested, and large variance across seeds.</p>
+              <p class="meta" data-i="p5.meta">Personal project, extending a CPE Lyon reinforcement-learning assignment · Oct 2026</p>
+              <div class="chips"><span class="chip">Stable-Baselines3</span><span class="chip">Gymnasium</span><span class="chip">PyTorch</span><span class="chip" data-i="chip.bt">Backtesting</span></div>
+            </div>
+            <figure class="fig">
+              <div class="panel sharpe" id="sharpe" aria-label="Sharpe ratio after fees, validation versus test"></div>
+              <figcaption data-i="p5.cap">Sharpe ratio after fees. Validation: the year used to select each agent. Test: 2025, never seen.</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <div class="planned">
+          <span class="label" data-i="p4.l">In progress · October 2026</span>
+          <h3 data-i="p4.t">Evidence-based RAG on Latin-American financial filings</h3>
+          <p data-i="p4.a">Questions in Spanish over Alicorp's quarterly reports, answered by Claude with a citation to the exact page for every figure. Layout-aware PDF parsing and period-aware hybrid search find the right page in the top 6 for 91&#8239;% of a hand-labelled test set, against 78&#8239;% for keyword search alone. End-to-end answer evaluation comes next. A public counterpart to my confidential LLM work at Meelo.</p>
+        </div>
+      </section>
+
+      <!-- PATH -->
+      <section id="path" aria-labelledby="path-h">
+        <div class="sec-head"><h2 id="path-h" data-i="path.h">Path</h2><span class="label" data-i="path.n">most recent first</span></div>
+        <ol class="path">
+          <li class="stop">
+            <span class="balise pin" aria-hidden="true"></span>
+            <div class="when" data-i="j1.w">Mar – Sep 2026</div>
+            <div class="what">
+              <h3>AI Software Engineer</h3>
+              <div class="org">Meelo · Lille, France</div>
+              <ul>
+                <li data-i="j1.a">Built an AI decision-support agent to automate the analysis of 150K+ business cases</li>
+                <li data-i="j1.b">Benchmarked 8 LLMs on accuracy, latency and inference cost, and selected the model for large-scale deployment on Vertex AI</li>
+                <li data-i="j1.c">Built a fraud-risk scoring system for tax documents (1–5 score) to prioritise suspicious cases, with Product Managers</li>
+              </ul>
+            </div>
+          </li>
+          <li class="stop">
+            <span class="balise pin" aria-hidden="true"></span>
+            <div class="when" data-i="j2.w">Jan – Feb 2026</div>
+            <div class="what">
+              <h3 data-i="j2.t">Production operator</h3>
+              <div class="org">Blanchisserie de Paris · Paris, France</div>
+              <ul><li data-i="j2.a">Ran industrial drying and ironing machines at factory pace, in a multicultural team where I picked up basic Tamil</li></ul>
+            </div>
+          </li>
+          <li class="stop">
+            <span class="balise pin" aria-hidden="true"></span>
+            <div class="when" data-i="j3.w">Jun – Sep 2024</div>
+            <div class="what">
+              <h3 data-i="j3.t">Venture capital analyst</h3>
+              <div class="org">Odyssée Venture · Paris, France</div>
+              <ul><li data-i="j3.a">Analysed software and AI deal flow: technology, barriers to entry including IP, competitive landscape</li></ul>
+            </div>
+          </li>
+          <li class="stop">
+            <span class="balise pin" aria-hidden="true"></span>
+            <div class="when">2022 – 2027</div>
+            <div class="what">
+              <h3 data-i="e1.t">Engineering degree, Software Engineering &amp; Big Data</h3>
+              <div class="org">CPE Lyon · Lyon, France</div>
+              <ul><li data-i="e1.a">Data science track: machine learning, applied statistics, distributed systems, software architecture</li></ul>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- OFF THE MAP -->
+      <section id="offmap" aria-labelledby="off-h">
+        <div class="sec-head"><h2 id="off-h" data-i="off.h">Off the map</h2><span class="label" data-i="off.n">field notes</span></div>
+        <div class="offmap">
+          <img class="portrait" src="https://avatars.githubusercontent.com/u/113982334?v=4&amp;s=400" alt="Portrait of Stanislas Sassolas" width="200" height="250" loading="lazy">
+          <div>
+            <p data-i="off.a">I like long efforts and steep learning curves. Away from a keyboard that means mountains and open water; at work it means taking a model from a notebook to something people rely on.</p>
+            <p data-i="off.b">I have travelled in Peru, Canada, England and Ireland, and I am working on my Spanish every day ahead of 2027.</p>
+            <div class="elev">
+              <div><b>5,200 m</b><span data-i="off.e1">Nevado San Mateo, Peru</span></div>
+              <div><b data-i="off.e2b">8 days</b><span data-i="off.e2">GR20 across Corsica</span></div>
+              <div><b>Monte-Cristo</b><span data-i="off.e3">open-water swim challenge</span></div>
+            </div>
+            <div class="langs" aria-label="Languages">
+              <span><b data-i="l.fr">French</b> <em data-i="l.frl">native</em></span>
+              <span><b data-i="l.en">English</b> <em>C1 · Cambridge</em></span>
+              <span><b data-i="l.es">Spanish</b> <em data-i="l.esl">B1, improving</em></span>
+              <span><b data-i="l.zh">Mandarin</b> <em>HSK2</em></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="contact" aria-labelledby="contact-h">
+        <div class="sec-head"><h2 id="contact-h" data-i="c.h">Contact</h2><span class="label">Lyon, France</span></div>
+        <p data-i="c.a">I'm looking for a 6-month Data Science, ML or AI engineering internship from February 2027, ideally in Peru, Colombia, Chile or Mexico. CPE Lyon provides the internship agreement.</p>
+        <div class="mail"><code id="email">stansasso@gmail.com</code><button type="button" class="btn" id="copy" data-i="c.copy">Copy</button><a class="btn solid" href="mailto:stansasso@gmail.com" data-i="c.write">Write to me</a></div>
+        <div class="cta">
+          <a class="btn" href="https://www.linkedin.com/in/stanislas-sassolas">LinkedIn</a>
+          <a class="btn" href="https://github.com/stanislas-sassolas">GitHub</a>
+          <a class="btn" href="cv/StanislasSassolas-CV-EN.pdf">CV · English</a>
+          <a class="btn" href="cv/StanislasSassolas-CV-ES.pdf">CV · Español</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer><div class="in"><span>© 2026 Stanislas Sassolas</span><span data-i="foot">Contours computed in your browser with marching squares. Charts use the projects' real results.</span></div></footer>
+
+<script>
+(() => {
+"use strict";
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let LANG = "en";
+
+/* ---------- i18n ---------- */
+const ES = {
+ "nav.work":"Proyectos","nav.path":"Trayectoria","nav.off":"Fuera del mapa","nav.contact":"Contacto",
+ "ro.title":"SUPERFICIE DE PÉRDIDA","ro.interval":"equidistancia 0,04","ro.step":"paso de descenso","ro.loss":"pérdida","ro.cursor":"bajo el cursor",
+ "ro.hint":"Descenso de gradiente con momento. Haz clic en el mapa para empezar un nuevo descenso desde ahí.","ro.btn":"Nuevo descenso aleatorio",
+ "hero.role":"Ingeniero de datos e IA",
+ "hero.lede":"Construyo herramientas de machine learning y LLM que funcionan con datos reales. En Meelo, una fintech de detección de fraude, construí un agente de IA que automatiza el análisis de más de 150 000 expedientes, tras comparar 8 LLM.",
+ "hero.status":"Disponible para prácticas de 6 meses · Latinoamérica · desde feb. 2027",
+ "hero.cta":"Ver proyectos","hero.cv":"CV (PDF)",
+ "key.title":"Leyenda","key.c1":"curva de nivel, cada 0,04","key.c2":"curva maestra, cada 0,20","key.tr":"ruta de descenso",
+ "work.h":"Proyectos","work.n":"4 proyectos · 1 en preparación","link.code":"Código e informe ↗","link.code2":"Código ↗","chip.open":"Datos abiertos",
+ "p1.q":"¿Cuánto cambia el clima el tráfico de bicicletas en Lyon?",
+ "p1.s1":"R² en una semana que el modelo nunca vio","p1.s2":"bicis/h de error absoluto medio","p1.s3":"RMSE frente a la misma hora la semana anterior",
+ "p1.a":"Fusioné 263 000 conteos horarios de 376 contadores de bicicletas con los sensores abiertos de temperatura y lluvia de Lyon en PySpark, y comparé cuatro modelos de Spark MLlib. Ganaron los árboles con gradient boosting.",
+ "p1.b":"Una partición aleatoria de datos horarios deja que el modelo vea los días con los que se le evalúa, así que validé de nuevo el resultado con una semana estrictamente posterior y frente a una referencia ingenua. Se mantuvo. El gráfico muestra esa semana, hora por hora.",
+ "p1.meta":"Proyecto de Big Data, CPE Lyon · equipo de 5 · desarrollé el pipeline de ML y la validación · dic. 2025",
+ "p1.la":"real","p1.lp":"predicción","p1.lr":"lluvia",
+ "p2.t":"Sentimiento en tuits sobre el COVID-19","p2.q":"¿Puede un modelo distinguir «negativo» de «muy negativo»?",
+ "p2.s1":"de exactitud en 5 clases","p2.s2":"de exactitud en 3 clases","p2.s3":"sobre una referencia TF-IDF",
+ "p2.a":"Sentimiento en cinco clases sobre 45 000 tuits de marzo y abril de 2020. Comparé cuatro redes de Keras con una referencia TF-IDF y regresión logística, con early stopping sobre un conjunto de validación para usar el conjunto de prueba una sola vez.",
+ "p2.b":"Para la polaridad sola, la referencia lineal ya es aceptable. Es en la intensidad donde los modelos secuenciales marcan la diferencia, y donde se concentra la mayoría de los errores restantes.",
+ "p2.meta":"Proyecto de deep learning, CPE Lyon · reejecutado y ampliado en 2026",
+ "p3.q":"Una app privada de dibujo para dos personas.",
+ "p3.s1":"líneas de Dart","p3.s2":"tests (39 unitarios, 25 de reglas de seguridad)","p3.s3":"publicada en Android",
+ "p3.a":"Una persona dibuja y pulsa Enviar. La otra lo ve reproducido trazo a trazo unos segundos después. Flutter y Firebase, con cola sin conexión, widget de pantalla de inicio y reglas de seguridad de Firestore que hacen de backend.",
+ "p3.b":"Los dibujos se guardan como vectores. Un dedo en una pantalla de 120 Hz genera muchos más puntos de los necesarios y un documento de Firestore está limitado a 1 MiB, así que cada trazo se simplifica con el algoritmo de Ramer–Douglas–Peucker antes de subirlo. Dibuja en el recuadro para verlo.",
+ "p3.meta":"Proyecto personal · diseñado, desarrollado y publicado por mí · sep. 2026","p3.clear":"Borrar",
+ "p5.t":"Agente de trading con RL","p5.q":"¿Puede un agente PPO superar a comprar y mantener después de comisiones?",
+ "p5.s1":"agentes: 3 activos × 3 semillas","p5.s2":"activos donde supera a comprar y mantener en datos de 2025 nunca vistos","p5.s3":"de comisión en cada operación",
+ "p5.a":"Agentes PPO deciden cada hora si estar invertidos o en efectivo, con datos horarios de BTC, ETH y oro. Las variables usan solo el pasado y su normalización se ajusta únicamente con los años de entrenamiento.",
+ "p5.b":"Los agentes superan a comprar y mantener en el año de validación usado para elegirlos, y pierden frente a ella en 2025, que nunca vieron. El informe explica por qué: sesgo de selección al quedarse con el mejor checkpoint, agentes que aprendieron sobre todo a mantenerse invertidos y una gran variabilidad entre semillas.",
+ "p5.meta":"Proyecto personal, a partir de un trabajo de aprendizaje por refuerzo de CPE Lyon · oct. 2026","chip.bt":"Backtesting",
+ "p5.cap":"Ratio de Sharpe después de comisiones. Validación: el año usado para elegir cada agente. Prueba: 2025, nunca visto.",
+ "p4.l":"En curso · octubre de 2026","p4.t":"RAG basado en evidencias sobre estados financieros latinoamericanos",
+ "p4.a":"Preguntas en español sobre los reportes trimestrales de Alicorp, respondidas por Claude con una cita a la página exacta para cada cifra. La extracción de PDF que conserva las tablas y la búsqueda híbrida con detección del periodo encuentran la página correcta entre los 6 primeros resultados en el 91 % de un conjunto de prueba anotado a mano, frente al 78 % con búsqueda por palabras clave. Próximo paso: evaluar las respuestas completas. La contraparte pública de mi trabajo confidencial con LLM en Meelo.",
+ "path.h":"Trayectoria","path.n":"de lo más reciente a lo más antiguo",
+ "j1.w":"mar. – sep. 2026",
+ "j1.a":"Desarrollo de un agente de IA de apoyo a la decisión para automatizar el análisis de más de 150 000 expedientes de empresas",
+ "j1.b":"Benchmark de 8 LLM (precisión, latencia y costo de inferencia) y selección del modelo para el despliegue a gran escala en Vertex AI",
+ "j1.c":"Sistema de scoring del riesgo de fraude en declaraciones fiscales (nota de 1 a 5) para priorizar los casos sospechosos, con los Product Managers",
+ "j2.w":"ene. – feb. 2026","j2.t":"Operario de producción","j2.a":"Manejo de máquinas industriales de secado y planchado a ritmo de fábrica, en un equipo multicultural donde aprendí nociones de tamil",
+ "j3.w":"jun. – sep. 2024","j3.t":"Analista de venture capital","j3.a":"Análisis de oportunidades de inversión en software e IA: tecnología, barreras de entrada (incluida la propiedad intelectual) y competencia",
+ "e1.t":"Título de ingeniero, Ingeniería de Software y Big Data","e1.a":"Especialidad en ciencia de datos: machine learning, estadística aplicada, sistemas distribuidos, arquitectura de software",
+ "off.h":"Fuera del mapa","off.n":"notas de campo",
+ "off.a":"Me gustan los esfuerzos largos y las curvas de aprendizaje empinadas. Lejos del teclado, eso significa montañas y aguas abiertas; en el trabajo, llevar un modelo del notebook a algo en lo que la gente confía.",
+ "off.b":"He viajado por Perú, Canadá, Inglaterra e Irlanda, y practico español todos los días de cara a 2027.",
+ "off.e1":"Nevado San Mateo, Perú","off.e2b":"8 días","off.e2":"GR20 a través de Córcega","off.e3":"reto de natación en aguas abiertas",
+ "l.fr":"Francés","l.frl":"nativo","l.en":"Inglés","l.es":"Español","l.esl":"B1, en progreso","l.zh":"Chino",
+ "c.h":"Contacto",
+ "c.a":"Busco prácticas de 6 meses en Data Science, ML o ingeniería de IA a partir de febrero de 2027, idealmente en Perú, Colombia, Chile o México. CPE Lyon emite el convenio de prácticas.",
+ "c.copy":"Copiar","c.write":"Escríbeme",
+ "foot":"Curvas de nivel calculadas en tu navegador con marching squares. Los gráficos usan los resultados reales de los proyectos."
+};
+const EN = {};
+document.querySelectorAll("[data-i]").forEach(el => { EN[el.dataset.i] = el.innerHTML; });
+const T = {
+  en:{ hoursFmt:"en-GB", cmCap:(n,tr,pr,p)=>`Of <b>${n}</b> tweets labelled <b>${tr}</b>, <b>${p}</b> were predicted <b>${pr}</b>.`,
+       cmRest:(a,s)=>`Rows: true class. Columns: predicted. <b>${a}</b> of the errors fall next to the diagonal, between neighbouring intensities.`,
+       cls:["Extremely negative","Negative","Neutral","Positive","Extremely positive"], clsS:["Ext. neg.","Neg.","Neutral","Pos.","Ext. pos."],
+       velo:(d,a,p,r)=>`<b>${d}</b> · actual <b>${a}</b> · predicted <b>${p}</b> · rain <b>${r} mm</b>`,
+       pad:(n,m,pc)=>`${n} points → <b>${m}</b> after simplification (−${pc} %)`, padEmpty:"Draw a stroke in the box", copied:"Copied", corner:"true ↓ / predicted →" },
+  es:{ hoursFmt:"es-PE", cmCap:(n,tr,pr,p)=>`De <b>${n}</b> tuits etiquetados como <b>${tr}</b>, <b>${p}</b> se predijeron como <b>${pr}</b>.`,
+       cmRest:(a,s)=>`Filas: clase real. Columnas: predicción. El <b>${a}</b> de los errores cae junto a la diagonal, entre intensidades vecinas.`,
+       cls:["Muy negativo","Negativo","Neutral","Positivo","Muy positivo"], clsS:["Muy neg.","Neg.","Neutral","Pos.","Muy pos."],
+       velo:(d,a,p,r)=>`<b>${d}</b> · real <b>${a}</b> · predicción <b>${p}</b> · lluvia <b>${r} mm</b>`,
+       pad:(n,m,pc)=>`${n} puntos → <b>${m}</b> tras simplificar (−${pc} %)`, padEmpty:"Dibuja un trazo en el recuadro", copied:"Copiado", corner:"real ↓ / predicción →" }
+};
+const nf = () => new Intl.NumberFormat(LANG === "es" ? "es-PE" : "en-US");
+
+function setLang(l){
+  LANG = l;
+  const d = l === "es" ? ES : EN;
+  document.querySelectorAll("[data-i]").forEach(el => { const v = d[el.dataset.i] ?? EN[el.dataset.i]; if (v != null) el.innerHTML = v; });
+  document.documentElement.lang = l;
+  document.getElementById("cv").href = `cv/StanislasSassolas-CV-${l === "es" ? "ES" : "EN"}.pdf`;
+  document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+  try { localStorage.setItem("lang", l); } catch (e) {}
+  renderAll();
+}
+document.querySelectorAll("[data-lang]").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+/* ---------- theme ---------- */
+document.getElementById("theme").addEventListener("click", () => {
+  const r = document.documentElement;
+  const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  r.dataset.theme = dark ? "light" : "dark";
+  try { localStorage.setItem("theme", r.dataset.theme); } catch (e) {}
+  renderAll(true);
+});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => renderAll(true));
+
+/* ======================================================================
+   1. Terrain: a synthetic loss surface, contoured with marching squares
+   ====================================================================== */
+const cv = document.getElementById("terrain"), cx = cv.getContext("2d");
+const base = document.createElement("canvas"), bx = base.getContext("2d");
+let W = 0, H = 0, DPR = 1, field = null, GX = 0, GY = 0, CELL = 6, LMIN = 0, LMAX = 1;
+const LEVEL = 0.04, INDEX_EVERY = 5;
+
+// Wells (minima) and peaks of the landscape, in unit coordinates; x is scaled by the aspect ratio.
+const wells = [[0.80,0.62,0.11,1.00],[0.58,0.30,0.08,0.62],[0.30,0.72,0.09,0.55],[0.93,0.20,0.07,0.40],[0.14,0.30,0.10,0.35]];
+const peaks = [[0.45,0.55,0.12,0.55],[0.70,0.85,0.09,0.35],[0.22,0.12,0.10,0.40],[0.98,0.92,0.12,0.30]];
+function rawLoss(u, v){
+  let z = 0.55 + 0.18 * ((u - 0.6) ** 2 + (v - 0.55) ** 2);
+  for (const [a,b,s,h] of wells) z -= h * Math.exp(-((u-a)**2 + (v-b)**2) / (2*s*s));
+  for (const [a,b,s,h] of peaks) z += h * Math.exp(-((u-a)**2 + (v-b)**2) / (2*s*s));
+  z += 0.035 * Math.sin(9*u + 3*v) * Math.cos(7*v - 2*u);
+  return z;
+}
+const loss = (u, v) => (rawLoss(u, v) - LMIN) / (LMAX - LMIN);
+
+function buildField(){
+  GX = Math.ceil(W / CELL) + 1; GY = Math.ceil(H / CELL) + 1;
+  field = new Float32Array(GX * GY);
+  let mn = Infinity, mx = -Infinity;
+  for (let j = 0; j < GY; j++) for (let i = 0; i < GX; i++) {
+    const z = rawLoss(i * CELL / W, j * CELL / H); field[j*GX+i] = z; if (z < mn) mn = z; if (z > mx) mx = z;
+  }
+  LMIN = mn; LMAX = mx;
+  for (let k = 0; k < field.length; k++) field[k] = (field[k] - mn) / (mx - mn);
+}
+
+function drawContours(){
+  base.width = W * DPR; base.height = H * DPR;
+  bx.setTransform(DPR,0,0,DPR,0,0);
+  bx.fillStyle = css("--paper"); bx.fillRect(0,0,W,H);
+  const col = css("--contour"), paper = css("--paper");
+  const labels = [];
+  for (let n = 1; n * LEVEL < 1; n++) {
+    const t = n * LEVEL, isIndex = n % INDEX_EVERY === 0;
+    bx.beginPath();
+    const segs = [];
+    for (let j = 0; j < GY - 1; j++) for (let i = 0; i < GX - 1; i++) {
+      const a = field[j*GX+i], b = field[j*GX+i+1], c = field[(j+1)*GX+i+1], d = field[(j+1)*GX+i];
+      const code = (a > t ? 8 : 0) | (b > t ? 4 : 0) | (c > t ? 2 : 0) | (d > t ? 1 : 0);
+      if (code === 0 || code === 15) continue;
+      const x = i * CELL, y = j * CELL;
+      const top = [x + CELL * (t - a) / (b - a), y], right = [x + CELL, y + CELL * (t - b) / (c - b)];
+      const bottom = [x + CELL * (t - d) / (c - d), y + CELL], left = [x, y + CELL * (t - a) / (d - a)];
+      const add = (p, q) => { bx.moveTo(p[0], p[1]); bx.lineTo(q[0], q[1]); if (isIndex) segs.push([p, q]); };
+      switch (code) {
+        case 1: case 14: add(left, bottom); break;
+        case 2: case 13: add(bottom, right); break;
+        case 3: case 12: add(left, right); break;
+        case 4: case 11: add(top, right); break;
+        case 6: case 9: add(top, bottom); break;
+        case 7: case 8: add(left, top); break;
+        case 5: add(left, top); add(bottom, right); break;
+        case 10: add(top, right); add(left, bottom); break;
+      }
+    }
+    bx.strokeStyle = col;
+    bx.globalAlpha = isIndex ? 0.95 : 0.55;
+    bx.lineWidth = isIndex ? 1.4 : 0.75;
+    bx.stroke();
+    bx.globalAlpha = 1;
+    if (isIndex && segs.length) {
+      // label a few well-separated segments, rotated along the line like a printed map
+      const step = Math.max(1, Math.floor(segs.length / 3));
+      for (let k = Math.floor(step / 2); k < segs.length; k += step) {
+        const [p, q] = segs[k], mx = (p[0]+q[0])/2, my = (p[1]+q[1])/2;
+        if (mx < 30 || mx > W - 30 || my < 20 || my > H - 20) continue;
+        if (labels.some(([lx, ly]) => Math.hypot(lx - mx, ly - my) < 120)) continue;
+        labels.push([mx, my, Math.atan2(q[1]-p[1], q[0]-p[0]), t]);
+      }
+    }
+  }
+  bx.font = "500 10px " + css("--mono");
+  bx.textAlign = "center"; bx.textBaseline = "middle";
+  for (const [x, y, ang, t] of labels) {
+    let a = ang; if (a > Math.PI/2) a -= Math.PI; if (a < -Math.PI/2) a += Math.PI;
+    bx.save(); bx.translate(x, y); bx.rotate(a);
+    const s = t.toFixed(2), w = bx.measureText(s).width + 6;
+    bx.fillStyle = paper; bx.fillRect(-w/2, -6, w, 12);
+    bx.fillStyle = col; bx.fillText(s, 0, 0.5);
+    bx.restore();
+  }
+  // graticule ticks on the frame, like a map neatline
+  bx.strokeStyle = css("--muted"); bx.globalAlpha = 0.5; bx.lineWidth = 1;
+  bx.beginPath();
+  for (let x = 0; x <= W; x += 80) { bx.moveTo(x, 0); bx.lineTo(x, 6); bx.moveTo(x, H); bx.lineTo(x, H - 6); }
+  for (let y = 0; y <= H; y += 80) { bx.moveTo(0, y); bx.lineTo(6, y); bx.moveTo(W, y); bx.lineTo(W - 6, y); }
+  bx.stroke(); bx.globalAlpha = 1;
+}
+
+// gradient descent with momentum, in pixel space
+let path = [], anim = 0, drawn = 0;
+function descend(sx, sy){
+  const p = [[sx, sy]];
+  let x = sx, y = sy, vx = 0, vy = 0;
+  const lr = 0.0025, mu = 0.9, e = 1e-3;
+  for (let k = 0; k < 400; k++) {
+    const u = x / W, v = y / H;
+    const gu = (loss(u + e, v) - loss(u - e, v)) / (2*e), gv = (loss(u, v + e) - loss(u, v - e)) / (2*e);
+    vx = mu * vx - lr * gu; vy = mu * vy - lr * gv;
+    x += vx * W; y += vy * H;
+    x = Math.min(W - 2, Math.max(2, x)); y = Math.min(H - 2, Math.max(2, y));
+    p.push([x, y]);
+    if (k > 20 && Math.hypot(vx * W, vy * H) < 0.05) break;
+  }
+  return p;
+}
+function startDescent(sx, sy){
+  path = descend(sx, sy);
+  cancelAnimationFrame(anim);
+  if (reduce) { drawn = path.length; frame(); return; }
+  drawn = 1; const t0 = performance.now(), dur = Math.min(2600, 900 + path.length * 9);
+  const tick = now => { drawn = Math.max(2, Math.round(path.length * Math.min(1, (now - t0) / dur))); frame(); if (drawn < path.length) anim = requestAnimationFrame(tick); };
+  anim = requestAnimationFrame(tick);
+}
+function frame(){
+  cx.setTransform(1,0,0,1,0,0);
+  cx.drawImage(base, 0, 0);
+  cx.setTransform(DPR,0,0,DPR,0,0);
+  if (!path.length) return;
+  const pts = path.slice(0, drawn), trail = css("--trail");
+  // red-and-white balise trail
+  cx.lineCap = "round"; cx.lineJoin = "round";
+  cx.beginPath(); pts.forEach(([x,y], i) => i ? cx.lineTo(x,y) : cx.moveTo(x,y));
+  cx.strokeStyle = trail; cx.lineWidth = 4; cx.stroke();
+  cx.setLineDash([5, 7]); cx.strokeStyle = "#ffffff"; cx.lineWidth = 2; cx.stroke(); cx.setLineDash([]);
+  // start marker: summit triangle
+  const [sx, sy] = path[0];
+  cx.beginPath(); cx.moveTo(sx, sy - 8); cx.lineTo(sx + 7, sy + 5); cx.lineTo(sx - 7, sy + 5); cx.closePath();
+  cx.fillStyle = css("--ink"); cx.fill();
+  // current / end point
+  const [ex, ey] = pts[pts.length - 1];
+  cx.beginPath(); cx.arc(ex, ey, 6, 0, Math.PI * 2); cx.fillStyle = trail; cx.fill();
+  cx.lineWidth = 2; cx.strokeStyle = css("--paper"); cx.stroke();
+  document.getElementById("ro-step").textContent = String(pts.length - 1).padStart(3, "0");
+  document.getElementById("ro-loss").textContent = Math.max(0, loss(ex / W, ey / H)).toFixed(3);
+}
+function sizeTerrain(){
+  const r = cv.getBoundingClientRect();
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = Math.round(r.width); H = Math.round(r.height);
+  if (!W || !H) return;
+  cv.width = W * DPR; cv.height = H * DPR;
+  CELL = W < 700 ? 5 : 6;
+  buildField(); drawContours();
+}
+function defaultStart(){ return [W * 0.6, H * 0.5]; }
+cv.addEventListener("click", e => { const r = cv.getBoundingClientRect(); startDescent(e.clientX - r.left, e.clientY - r.top); });
+cv.addEventListener("pointermove", e => {
+  const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  document.getElementById("ro-cursor").textContent = Math.max(0, loss(x / W, y / H)).toFixed(3);
+});
+cv.addEventListener("pointerleave", () => { document.getElementById("ro-cursor").textContent = "—"; });
+document.getElementById("new-descent").addEventListener("click", () => startDescent(W * (0.08 + Math.random() * 0.84), H * (0.08 + Math.random() * 0.84)));
+
+/* ======================================================================
+   2. MeteoVelo: hold-out week, actual vs predicted (real model output)
+   ====================================================================== */
+const VELO = {start:"2022-04-23T00",
+a:[5749,3647,2240,1904,1556,1132,1335,2127,5211,8461,10137,10802,9844,8265,8570,9607,9329,8158,5181,6216,5330,3748,3279,3485,2932,2134,1944,1964,1343,895,838,1176,3296,5588,8942,11555,11870,9046,10484,12962,13666,12202,10847,9060,4565,2863,2379,1838,1009,621,333,268,477,977,2954,10407,28146,12124,6336,6763,9958,9059,7744,7972,11872,23111,28466,19277,10203,5584,4427,2925,1646,782,437,419,579,1020,3913,14002,35478,15365,8104,7743,12578,11897,10540,11069,15629,28462,36668,25261,14003,7921,6936,5859,2774,1386,577,533,671,1098,3820,14101,34718,16496,9259,10162,14383,13451,13344,13668,18147,30418,37651,27382,15248,8612,7947,7038,3699,1909,835,757,725,1204,3855,13818,36403,17437,9219,10178,15013,13394,12978,13635,17906,31392,37306,28389,15720,9493,9376,8179,5058,3049,1274,1145,1066,1282,3400,11362,27963,15020,9318,11136,16190,13059,13463,14072,18864,27081,26493,16833,9262,6438,5750,5655],
+p:[4958,2219,1599,1411,1282,1431,2607,4814,8748,7394,9840,10545,12185,12038,12084,12198,15114,15398,14031,13726,9766,5076,4405,3695,4381,2122,1422,1311,1172,1185,2107,2339,6178,6012,10291,11836,13048,11240,11534,13482,15175,16664,14076,12348,7924,6129,4674,3400,1808,1039,483,1165,-213,-180,1194,11270,31110,14136,7991,8976,12778,10755,10633,10397,15384,27960,32558,21943,11355,5205,6053,4882,2239,958,1151,912,768,1086,3049,16206,36256,16665,9392,10291,13610,12566,11571,12211,16089,30756,35779,25062,11652,7259,6681,5352,1614,1156,-315,839,911,1955,3009,15285,34240,16908,9167,9948,13866,13293,12273,12564,16248,29682,33369,25167,12568,7821,7000,6041,2972,1594,877,813,874,1090,3587,16452,36598,16613,9136,10048,14403,14002,13154,16944,18409,31954,34386,27350,15815,9788,9106,8450,4751,2179,1283,1020,1043,995,3238,13135,28768,17529,9218,11307,15257,14068,14385,14566,21395,27274,24326,17987,10276,6388,5614,5806],
+r:[0,0,0,0,0,0,0,0,0,0.1,0.1,0.1,0.1,0.1,0,0.13,0,0.32,0.42,0.23,0.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0.25,0.25,0.27,0.22,0.13,0.16,0.15,0.13,0.1,0,0,0,0,0,0,0,0,0,0.1,0.1,0.1,0,0,0,0.77,0.33,0.19,0.38,0.21,0.17,0.12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.16,0.1,0,0,0]};
+const t0 = new Date(2022, 3, 23, 0);
+let veloIdx = 80; // Tue 26 Apr, 08:00, the week's morning peak
+function hourLabel(i){
+  const d = new Date(t0.getTime() + i * 3600e3);
+  const day = new Intl.DateTimeFormat(T[LANG].hoursFmt, {weekday:"short", day:"numeric", month:"short"}).format(d);
+  return `${day}, ${String(d.getHours()).padStart(2,"0")}:00`;
+}
+function renderVelo(){
+  const host = document.getElementById("velo"); const w = Math.max(280, host.clientWidth || 520);
+  const h = Math.round(Math.min(300, Math.max(200, w * 0.52)));
+  const m = {l:38, r:6, t:8, b:46}, rainH = 16;
+  const iw = w - m.l - m.r, ih = h - m.t - m.b - rainH - 8;
+  const n = VELO.a.length, yMax = 40000, yMin = -2000;
+  const X = i => m.l + iw * i / (n - 1), Y = v => m.t + ih * (1 - (v - yMin) / (yMax - yMin));
+  const line = arr => arr.map((v, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join("");
+  const nfm = nf();
+  let s = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Hourly bike traffic, 23 to 29 April 2022, actual vs predicted">`;
+  s += `<g class="grid">`; for (const v of [0,10000,20000,30000,40000]) s += `<line x1="${m.l}" x2="${w-m.r}" y1="${Y(v)}" y2="${Y(v)}"/>`; s += `</g>`;
+  s += `<g class="axis">`;
+  for (const v of [0,10000,20000,30000,40000]) s += `<text x="${m.l-6}" y="${Y(v)+3}" text-anchor="end">${v ? v/1000 + "k" : "0"}</text>`;
+  for (let d = 0; d < 7; d++) {
+    const x = X(d * 24 + 12), dt = new Date(t0.getTime() + (d*24+12) * 3600e3);
+    const lab = new Intl.DateTimeFormat(T[LANG].hoursFmt, {weekday:"short", day:"numeric"}).format(dt);
+    s += `<text x="${x}" y="${h - 6}" text-anchor="middle">${lab}</text>`;
+    if (d) s += `<line x1="${X(d*24)}" x2="${X(d*24)}" y1="${m.t}" y2="${h-20}" stroke="var(--rule)"/>`;
+  }
+  s += `</g>`;
+  const ry = m.t + ih + 8;
+  for (let i = 0; i < n; i++) if (VELO.r[i] > 0) { const bh = Math.max(2, rainH * Math.min(1, VELO.r[i] / 0.8)); s += `<rect x="${X(i)-1}" y="${ry + rainH - bh}" width="2.2" height="${bh}" fill="var(--water)" opacity=".55"/>`; }
+  s += `<line x1="${m.l}" x2="${w-m.r}" y1="${ry+rainH}" y2="${ry+rainH}" stroke="var(--rule)"/>`;
+  s += `<path d="${line(VELO.a)}" fill="none" stroke="var(--ink)" stroke-width="1.6"/>`;
+  s += `<path d="${line(VELO.p)}" fill="none" stroke="var(--water)" stroke-width="1.6" stroke-dasharray="4 3"/>`;
+  const cxp = X(veloIdx);
+  s += `<line id="vx" x1="${cxp}" x2="${cxp}" y1="${m.t}" y2="${ry+rainH}" stroke="var(--trail)" stroke-width="1"/>`;
+  s += `<circle id="va" cx="${cxp}" cy="${Y(VELO.a[veloIdx])}" r="3.5" fill="var(--ink)"/><circle id="vp" cx="${cxp}" cy="${Y(VELO.p[veloIdx])}" r="3.5" fill="var(--paper)" stroke="var(--water)" stroke-width="2"/>`;
+  s += `<rect id="vhit" x="${m.l}" y="0" width="${iw}" height="${h}" fill="transparent" style="cursor:crosshair"/></svg>`;
+  host.innerHTML = s;
+  const cap = document.getElementById("velo-cap");
+  const show = i => {
+    veloIdx = i; const x = X(i);
+    for (const id of ["vx"]) { const el = host.querySelector("#"+id); el.setAttribute("x1", x); el.setAttribute("x2", x); }
+    host.querySelector("#va").setAttribute("cx", x); host.querySelector("#va").setAttribute("cy", Y(VELO.a[i]));
+    host.querySelector("#vp").setAttribute("cx", x); host.querySelector("#vp").setAttribute("cy", Y(VELO.p[i]));
+    cap.innerHTML = T[LANG].velo(hourLabel(i), nfm.format(VELO.a[i]), nfm.format(Math.max(0, VELO.p[i])), VELO.r[i].toFixed(1));
+  };
+  const svg = host.querySelector("svg");
+  const pick = e => { const r = svg.getBoundingClientRect(); const x = (e.clientX - r.left) * (w / r.width); show(Math.max(0, Math.min(n - 1, Math.round((x - m.l) / iw * (n - 1))))); };
+  host.querySelector("#vhit").addEventListener("pointermove", pick);
+  host.querySelector("#vhit").addEventListener("pointerdown", pick);
+  show(veloIdx);
+}
+
+/* ======================================================================
+   3. Sentiment: confusion matrix and model comparison (real test-set counts)
+   ====================================================================== */
+const CM = [[423,156,1,12,0],[71,800,21,143,6],[5,60,487,64,1],[7,64,15,763,98],[0,8,1,104,486]];
+const MODELS = [["TF-IDF + LogReg",54.2],["LSTM",75.1],["BiLSTM",76.6],["GRU",77.3],["CNN+LSTM",78.0]];
+function renderCM(){
+  const host = document.getElementById("cm"), t = T[LANG], narrow = host.clientWidth < 420;
+  const names = narrow ? t.clsS : t.cls;
+  let errs = 0, adj = 0;
+  CM.forEach((row, i) => row.forEach((v, j) => { if (i !== j) { errs += v; if (Math.abs(i - j) === 1) adj += v; } }));
+  let s = `<div class="corner">${t.corner}</div>`;
+  names.forEach(nm => { s += `<div class="h" role="columnheader">${nm}</div>`; });
+  CM.forEach((row, i) => {
+    const tot = row.reduce((a, b) => a + b, 0);
+    s += `<div class="h rh" role="rowheader">${names[i]}</div>`;
+    row.forEach((v, j) => {
+      const p = v / tot, pct = Math.round(p * 100);
+      const mix = Math.round(8 + p * 86);
+      const fg = p > 0.45 ? "var(--paper)" : "var(--ink)";
+      s += `<div class="cell${i===j?" diag":""}" role="cell" tabindex="0" data-i="${i}" data-j="${j}" style="background:color-mix(in oklab,var(--water) ${mix}%,var(--paper));color:${fg}">${v}<small>${pct} %</small></div>`;
+    });
+  });
+  host.innerHTML = s;
+  const cap = document.getElementById("cm-cap");
+  const rest = () => { cap.innerHTML = t.cmRest(Math.round(adj / errs * 100) + " %"); host.querySelectorAll(".hot").forEach(c => c.classList.remove("hot")); };
+  host.querySelectorAll(".cell").forEach(c => {
+    const on = () => {
+      host.querySelectorAll(".hot").forEach(x => x.classList.remove("hot")); c.classList.add("hot");
+      const i = +c.dataset.i, j = +c.dataset.j, tot = CM[i].reduce((a, b) => a + b, 0);
+      cap.innerHTML = t.cmCap(tot, t.cls[i], t.cls[j], `${CM[i][j]} (${Math.round(CM[i][j] / tot * 100)} %)`);
+    };
+    c.addEventListener("pointerenter", on); c.addEventListener("focus", on);
+  });
+  host.addEventListener("pointerleave", rest);
+  rest();
+  const bars = document.getElementById("bars");
+  bars.innerHTML = MODELS.map(([n, v], k) => `<div class="bar${k===MODELS.length-1?" best":""}"><span>${n.replace("TF-IDF + LogReg","TF-IDF")}</span><span class="track"><span class="fill" style="width:${v}%"></span></span><span class="v">${v.toFixed(1)} %</span></div>`).join("");
+}
+
+/* ======================================================================
+   4. Duo: Ramer–Douglas–Peucker on a stroke you draw
+   ====================================================================== */
+const pad = document.getElementById("pad"), px = pad.getContext("2d");
+let PW = 0, PH = 0, raw = [], drawing = false;
+function rdp(pts, eps){
+  if (pts.length < 3) return pts.slice();
+  const [a, b] = [pts[0], pts[pts.length - 1]];
+  let idx = 0, dmax = 0;
+  const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const d = Math.abs(dy * pts[i][0] - dx * pts[i][1] + b[0]*a[1] - b[1]*a[0]) / L;
+    if (d > dmax) { dmax = d; idx = i; }
+  }
+  if (dmax <= eps) return [a, b];
+  const l = rdp(pts.slice(0, idx + 1), eps), r = rdp(pts.slice(idx), eps);
+  return l.slice(0, -1).concat(r);
+}
+function sampleStroke(){
+  // a ridge line, densely sampled like a 120 Hz touch screen
+  const pts = [];
+  for (let k = 0; k <= 260; k++) {
+    const u = k / 260;
+    const ridge = 0.62 - 0.36 * Math.exp(-((u - 0.55) ** 2) / 0.018) - 0.14 * Math.exp(-((u - 0.25) ** 2) / 0.01) - 0.1 * Math.exp(-((u - 0.82) ** 2) / 0.006);
+    pts.push([PW * (0.06 + 0.88 * u), PH * (ridge + 0.0012 * Math.sin(k * 1.7))]);
+  }
+  return pts;
+}
+function renderPad(){
+  px.setTransform(DPR,0,0,DPR,0,0);
+  px.clearRect(0, 0, PW, PH);
+  px.fillStyle = css("--paper"); px.fillRect(0, 0, PW, PH);
+  const cap = document.getElementById("pad-cap");
+  if (raw.length < 2) { cap.innerHTML = T[LANG].padEmpty; return; }
+  const simp = rdp(raw, 1.2);
+  px.fillStyle = css("--contour");
+  for (const [x, y] of raw) { px.beginPath(); px.arc(x, y, 1.3, 0, Math.PI * 2); px.fill(); }
+  px.beginPath(); simp.forEach(([x, y], i) => i ? px.lineTo(x, y) : px.moveTo(x, y));
+  px.strokeStyle = css("--ink"); px.lineWidth = 2.2; px.lineJoin = "round"; px.lineCap = "round"; px.stroke();
+  px.fillStyle = css("--trail");
+  for (const [x, y] of simp) { px.beginPath(); px.arc(x, y, 3, 0, Math.PI * 2); px.fill(); }
+  cap.innerHTML = T[LANG].pad(raw.length, simp.length, Math.round((1 - simp.length / raw.length) * 100));
+}
+function sizePad(){
+  const r = pad.getBoundingClientRect(); PW = Math.round(r.width); PH = Math.round(r.height);
+  if (!PW || !PH) return;
+  pad.width = PW * DPR; pad.height = PH * DPR;
+  if (!raw.length || !drawing) raw = raw.length && raw.custom ? raw : Object.assign(sampleStroke(), {custom:false});
+  renderPad();
+}
+const padPt = e => { const r = pad.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+pad.addEventListener("pointerdown", e => { drawing = true; pad.setPointerCapture(e.pointerId); raw = Object.assign([padPt(e)], {custom:true}); renderPad(); });
+pad.addEventListener("pointermove", e => {
+  if (!drawing) return;
+  const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+  for (const ev of evs) raw.push(padPt(ev));
+  renderPad();
+});
+const endDraw = () => { drawing = false; };
+pad.addEventListener("pointerup", endDraw); pad.addEventListener("pointercancel", endDraw);
+document.getElementById("pad-clear").addEventListener("click", () => { raw = Object.assign([], {custom:true}); renderPad(); });
+
+
+/* ======================================================================
+   5. RL agent: validation vs test Sharpe (real results, mean of 3 seeds)
+   ====================================================================== */
+const SHARPE = {BTC:{val:[2.00,1.76],test:[-0.02,0.14]}, ETH:{val:[0.99,0.91],test:[0.81,0.88]}, GOLD:{val:[3.22,2.52],test:[1.33,1.97]}};
+function renderSharpe(){
+  const host = document.getElementById("sharpe"); if (!host) return;
+  const es = LANG === "es", max = 3.4;
+  const lab = {val: es ? "validación" : "validation", test: es ? "prueba 2025" : "test 2025"};
+  const names = [es ? "PPO (media)" : "PPO (mean)", es ? "Comprar y mantener" : "Buy & hold"];
+  let h = `<div class="sh-legend"><span><i style="background:var(--trail)"></i>${names[0]}</span><span><i style="background:var(--ink)"></i>${names[1]}</span></div>`;
+  for (const [asset, v] of Object.entries(SHARPE)) {
+    h += `<div class="sh-asset"><b>${asset === "GOLD" && es ? "ORO" : asset}</b>`;
+    for (const split of ["val", "test"]) v[split].forEach((x, k) => {
+      h += `<div class="sh-row"><span>${k === 0 ? lab[split] : ""}</span><span class="sh-track"><span class="sh-fill" style="width:${Math.max(0, x) / max * 100}%;background:${k === 0 ? "var(--trail)" : "var(--ink)"}"></span></span><span class="v">${x.toFixed(2)}</span></div>`;
+    });
+    h += `</div>`;
+  }
+  host.innerHTML = h;
+}
+
+/* ---------- misc ---------- */
+document.getElementById("copy").addEventListener("click", async e => {
+  const b = e.currentTarget, txt = document.getElementById("email").textContent;
+  try { await navigator.clipboard.writeText(txt); b.textContent = T[LANG].copied; setTimeout(() => { b.innerHTML = (LANG === "es" ? ES : EN)["c.copy"]; }, 1600); }
+  catch (err) { const r = document.createRange(); r.selectNodeContents(document.getElementById("email")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+});
+const secLinks = [...document.querySelectorAll(".legend a")];
+const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) secLinks.forEach(a => a.classList.toggle("on", a.dataset.sec === en.target.id)); }), {rootMargin:"-40% 0px -55% 0px"});
+document.querySelectorAll("main section").forEach(s => io.observe(s));
+
+function renderAll(themeChanged){
+  if (themeChanged && W) { drawContours(); frame(); }
+  renderVelo(); renderCM(); renderPad(); renderSharpe();
+}
+let rt = 0;
+function relayout(){ sizeTerrain(); sizePad(); renderVelo(); renderCM(); if (path.length) { const [sx, sy] = path[0]; path = descend(Math.min(sx, W - 4), Math.min(sy, H - 4)); drawn = path.length; } frame(); }
+addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(relayout, 120); });
+
+function boot(){
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  let l = "en";
+  try { l = localStorage.getItem("lang") || ((navigator.language || "").slice(0, 2) === "es" ? "es" : "en"); } catch (e) {}
+  sizeTerrain(); sizePad();
+  if (l === "es") setLang("es"); else renderAll();
+  const [sx, sy] = defaultStart(); startDescent(sx, sy);
+}
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(boot); else boot();
+})();
+</script>
+</body>
+</html>
