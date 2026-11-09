@@ -1,0 +1,11 @@
+,hit@1,hit@3,hit@6,MRR,coverage@6 (comparison)
+BM25 · plain text,0.375,0.5,0.781,0.488,0.528
+Dense (e5-small) · plain text,0.125,0.5,0.688,0.322,0.389
+Hybrid (RRF) · plain text,0.219,0.562,0.875,0.451,0.472
+Hybrid + period filter · plain text,0.188,0.781,0.938,0.49,0.639
+Hybrid + period filter + reranker · plain text,0.375,0.562,0.875,0.527,0.417
+BM25 · layout-aware,0.312,0.531,0.781,0.465,0.528
+Dense (e5-small) · layout-aware,0.156,0.562,0.75,0.381,0.556
+Hybrid (RRF) · layout-aware,0.188,0.625,0.875,0.431,0.528
+Hybrid + period filter · layout-aware,0.281,0.719,0.906,0.523,0.528
+Hybrid + period filter + reranker · layout-aware,0.344,0.562,0.906,0.508,0.25

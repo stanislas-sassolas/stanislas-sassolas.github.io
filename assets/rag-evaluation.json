@@ -1,0 +1,576 @@
+[
+  {
+    "id": "q01",
+    "type": "lookup",
+    "question": "¿Cuáles fueron las ventas netas consolidadas de Alicorp en el 3T24?",
+    "answer": "S/ 3,213.9 millones",
+    "numbers": [
+      "3,213.9"
+    ],
+    "gold": [
+      [
+        "alicorp_3Q24",
+        5
+      ],
+      [
+        "alicorp_3Q24",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q02",
+    "type": "lookup",
+    "question": "¿Cuál fue el EBITDA consolidado de Alicorp en el primer trimestre de 2024?",
+    "answer": "S/ 305.2 millones",
+    "numbers": [
+      "305.2"
+    ],
+    "gold": [
+      [
+        "alicorp_1Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q03",
+    "type": "lookup",
+    "question": "¿Cuál fue el margen EBITDA consolidado en el 2T24?",
+    "answer": "12.7%",
+    "numbers": [
+      "12.7"
+    ],
+    "gold": [
+      [
+        "alicorp_2Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q04",
+    "type": "lookup",
+    "question": "¿Cuánto fue la utilidad neta de Alicorp en el cuarto trimestre de 2023?",
+    "answer": "S/ 74 millones",
+    "numbers": [
+      "74"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        5
+      ],
+      [
+        "alicorp_4Q23",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q05",
+    "type": "lookup",
+    "question": "¿Cuál fue la utilidad neta de Alicorp en el año completo 2023?",
+    "answer": "S/ 196 millones",
+    "numbers": [
+      "196"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        5
+      ],
+      [
+        "alicorp_4Q23",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q06",
+    "type": "lookup",
+    "question": "¿Cuánto sumaron las ventas netas de Alicorp en todo 2023?",
+    "answer": "S/ 13,656 millones",
+    "numbers": [
+      "13,656"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q07",
+    "type": "lookup",
+    "question": "¿Cuál fue el margen bruto en el 1T24 y cómo se compara con el 1T23?",
+    "answer": "21.9% frente a 15.6% en el 1T23, un aumento de 6.2 p.p.",
+    "numbers": [
+      "21.9",
+      "15.6"
+    ],
+    "gold": [
+      [
+        "alicorp_1Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q08",
+    "type": "lookup",
+    "question": "¿Cuál fue la tasa impositiva efectiva de Alicorp en el 4T23?",
+    "answer": "47.1%",
+    "numbers": [
+      "47.1"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        5
+      ],
+      [
+        "alicorp_4Q23",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q09",
+    "type": "lookup",
+    "question": "¿Qué volumen vendió Alicorp en el 2T24, en toneladas métricas?",
+    "answer": "730.7 miles de toneladas métricas",
+    "numbers": [
+      "730.7"
+    ],
+    "gold": [
+      [
+        "alicorp_2Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q10",
+    "type": "lookup",
+    "question": "¿Cuál fue la utilidad operativa en el tercer trimestre de 2024?",
+    "answer": "S/ 329.5 millones",
+    "numbers": [
+      "329.5"
+    ],
+    "gold": [
+      [
+        "alicorp_3Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q11",
+    "type": "lookup",
+    "question": "¿A cuánto ascendió el gasto financiero neto en el 2T24?",
+    "answer": "S/ 77.5 millones",
+    "numbers": [
+      "77.5"
+    ],
+    "gold": [
+      [
+        "alicorp_2Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q12",
+    "type": "lookup",
+    "question": "¿Cuál fue el EBITDA acumulado de los nueve primeros meses de 2024?",
+    "answer": "S/ 1,111.5 millones",
+    "numbers": [
+      "1,111.5"
+    ],
+    "gold": [
+      [
+        "alicorp_3Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q13",
+    "type": "lookup",
+    "question": "¿Cuál fue el margen bruto de Consumo Masivo Perú en el 2T24?",
+    "answer": "41.0%",
+    "numbers": [
+      "41.0"
+    ],
+    "gold": [
+      [
+        "alicorp_2Q24",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q14",
+    "type": "lookup",
+    "question": "¿Cuál fue el EBITDA de la unidad Consumo Masivo Perú en el 1T24?",
+    "answer": "S/ 199.4 millones",
+    "numbers": [
+      "199.4"
+    ],
+    "gold": [
+      [
+        "alicorp_1Q24",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q15",
+    "type": "lookup",
+    "question": "¿Cuál era el ratio deuda neta / EBITDA de Alicorp a septiembre de 2024?",
+    "answer": "2.5 veces (2.50x)",
+    "numbers": [
+      "2.5"
+    ],
+    "gold": [
+      [
+        "alicorp_3Q24",
+        10
+      ],
+      [
+        "alicorp_3Q24",
+        13
+      ]
+    ]
+  },
+  {
+    "id": "q16",
+    "type": "lookup",
+    "question": "¿Cuál era la deuda total de Alicorp en marzo de 2024?",
+    "answer": "S/ 4,822 millones",
+    "numbers": [
+      "4,822"
+    ],
+    "gold": [
+      [
+        "alicorp_1Q24",
+        11
+      ]
+    ]
+  },
+  {
+    "id": "q17",
+    "type": "lookup",
+    "question": "¿A cuánto ascendía la deuda total de Alicorp en septiembre de 2024?",
+    "answer": "S/ 5,673 millones",
+    "numbers": [
+      "5,673"
+    ],
+    "gold": [
+      [
+        "alicorp_3Q24",
+        11
+      ]
+    ]
+  },
+  {
+    "id": "q18",
+    "type": "lookup",
+    "question": "¿Cuánto disminuyó la deuda neta durante el 1T24 y en qué nivel quedó?",
+    "answer": "Disminuyó S/ 284 millones, a S/ 3,304 millones a marzo de 2024",
+    "numbers": [
+      "284",
+      "3,304"
+    ],
+    "gold": [
+      [
+        "alicorp_1Q24",
+        12
+      ]
+    ]
+  },
+  {
+    "id": "q19",
+    "type": "lookup",
+    "question": "¿A cuánto ascendía la deuda neta de Alicorp a diciembre de 2023?",
+    "answer": "S/ 3,588 millones",
+    "numbers": [
+      "3,588"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        11
+      ],
+      [
+        "alicorp_1Q24",
+        12
+      ]
+    ]
+  },
+  {
+    "id": "q20",
+    "type": "lookup",
+    "question": "¿Por qué monto ejecutó Alicorp su programa de recompra de acciones en el 2T24?",
+    "answer": "S/ 515 millones",
+    "numbers": [
+      "515"
+    ],
+    "gold": [
+      [
+        "alicorp_2Q24",
+        10
+      ],
+      [
+        "alicorp_2Q24",
+        12
+      ]
+    ]
+  },
+  {
+    "id": "q21",
+    "type": "lookup",
+    "question": "¿Cuánto pagó Alicorp en dividendos en 2023?",
+    "answer": "S/ 214 millones, pagados en mayo de 2023",
+    "numbers": [
+      "214"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        10
+      ],
+      [
+        "alicorp_3Q24",
+        13
+      ]
+    ]
+  },
+  {
+    "id": "q22",
+    "type": "lookup",
+    "question": "¿Cuál era el ratio de apalancamiento (pasivo total / patrimonio) a septiembre de 2024?",
+    "answer": "4.32x",
+    "numbers": [
+      "4.32"
+    ],
+    "gold": [
+      [
+        "alicorp_3Q24",
+        10
+      ]
+    ]
+  },
+  {
+    "id": "q23",
+    "type": "explanation",
+    "question": "¿Por qué aumentó la utilidad bruta de Alicorp en el 4T23?",
+    "answer": "Por el buen desempeño de Consumo Masivo Perú (+29.7% AaA), Negocios Internacionales (+81.9%) y B2B (+22.1%), parcialmente compensado por Acuicultura y Molienda",
+    "numbers": [
+      "29.7"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q24",
+    "type": "explanation",
+    "question": "¿Qué explica la caída del volumen consolidado en el 1T24?",
+    "answer": "Principalmente la reducción de 20.1% en el volumen de Acuicultura, además de menor volumen en Consumo Masivo Perú e Internacional; parcialmente compensado por Molienda y B2B",
+    "numbers": [
+      "20.1"
+    ],
+    "gold": [
+      [
+        "alicorp_1Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q25",
+    "type": "explanation",
+    "question": "¿Por qué aumentaron los gastos financieros netos en el 4T23?",
+    "answer": "Por una mayor deuda, explicada por la menor generación de flujo de efectivo en Acuicultura y Molienda (+23.8% AaA)",
+    "numbers": [
+      "23.8"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q26",
+    "type": "explanation",
+    "question": "¿Por qué la tasa efectiva de impuestos subió a 47.1% en el 4T23?",
+    "answer": "Por una mayor utilidad antes de impuestos en Perú y un efecto negativo del impuesto diferido en las subsidiarias de Uruguay y Ecuador",
+    "numbers": [
+      "47.1"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q27",
+    "type": "explanation",
+    "question": "¿Qué empresa adquirió Alicorp en 2024 y por qué valor?",
+    "answer": "Refinería del Espino S.A., con un valor empresa de USD 244.0 millones por el 100% de las acciones; Alicorp había adquirido el 90.55%",
+    "numbers": [
+      "244.0"
+    ],
+    "gold": [
+      [
+        "alicorp_3Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q28",
+    "type": "explanation",
+    "question": "¿Qué beneficios espera Alicorp de la adquisición de Refinería del Espino?",
+    "answer": "Fortalecer la distribución en la región oriental del Perú, desarrollar nuevas categorías, entrar en nuevos mercados de exportación y asegurar suministro de derivados de palma con certificación RSPO",
+    "numbers": [],
+    "gold": [
+      [
+        "alicorp_3Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q29",
+    "type": "explanation",
+    "question": "¿Por qué disminuyeron los gastos financieros netos en el 2T24?",
+    "answer": "Por mayores ingresos financieros gracias a una mayor caja, debida a la mejora del capital de trabajo, que compensó la reducción de las tasas de interés (-14.8% AaA)",
+    "numbers": [
+      "14.8"
+    ],
+    "gold": [
+      [
+        "alicorp_2Q24",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q30",
+    "type": "comparison",
+    "question": "¿Cómo evolucionó el margen EBITDA consolidado de Alicorp entre el 1T24, el 2T24 y el 3T24?",
+    "answer": "10.8% en el 1T24, 12.7% en el 2T24 y 13.4% en el 3T24",
+    "numbers": [
+      "10.8",
+      "12.7",
+      "13.4"
+    ],
+    "gold": [
+      [
+        "alicorp_1Q24",
+        5
+      ],
+      [
+        "alicorp_2Q24",
+        5
+      ],
+      [
+        "alicorp_3Q24",
+        5
+      ]
+    ]
+  },
+  {
+    "id": "q31",
+    "type": "comparison",
+    "question": "¿Cómo evolucionó el ratio deuda neta / EBITDA entre diciembre de 2023 y septiembre de 2024, trimestre a trimestre?",
+    "answer": "3.12x (dic. 2023), 2.71x (mar. 2024), 3.02x (jun. 2024) y 2.50x (sep. 2024)",
+    "numbers": [
+      "3.12",
+      "2.71",
+      "3.02",
+      "2.5"
+    ],
+    "gold": [
+      [
+        "alicorp_4Q23",
+        9
+      ],
+      [
+        "alicorp_1Q24",
+        10
+      ],
+      [
+        "alicorp_2Q24",
+        10
+      ],
+      [
+        "alicorp_3Q24",
+        10
+      ]
+    ]
+  },
+  {
+    "id": "q32",
+    "type": "comparison",
+    "question": "Compara la utilidad neta de Alicorp del 1T24 con la del 2T24.",
+    "answer": "S/ 79.8 millones en el 1T24 frente a S/ 196.0 millones en el 2T24",
+    "numbers": [
+      "79.8",
+      "196"
+    ],
+    "gold": [
+      [
+        "alicorp_1Q24",
+        5
+      ],
+      [
+        "alicorp_2Q24",
+        6
+      ]
+    ]
+  },
+  {
+    "id": "q33",
+    "type": "unanswerable",
+    "question": "¿Cuál fue la utilidad neta de Alicorp en el 4T24?",
+    "answer": "No está en los documentos: el corpus llega hasta el 3T24",
+    "numbers": [],
+    "gold": []
+  },
+  {
+    "id": "q34",
+    "type": "unanswerable",
+    "question": "¿Cuántos empleados tiene Alicorp?",
+    "answer": "No está en los documentos",
+    "numbers": [],
+    "gold": []
+  },
+  {
+    "id": "q35",
+    "type": "unanswerable",
+    "question": "¿Cuál fue el EBITDA de Credicorp en 2024?",
+    "answer": "No está en los documentos: el corpus solo contiene reportes de Alicorp",
+    "numbers": [],
+    "gold": []
+  },
+  {
+    "id": "q36",
+    "type": "unanswerable",
+    "question": "¿Cuál era el precio de la acción ALICORC1 al cierre del 3T24?",
+    "answer": "No está en los documentos",
+    "numbers": [],
+    "gold": []
+  }
+]

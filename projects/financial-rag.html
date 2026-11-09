@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Financial RAG — Stanislas Sassolas</title>
+  <meta name="description" content="A case study in financial RAG: Spanish reports, hybrid retrieval, measured results and explicit limitations.">
+  <meta name="theme-color" content="#ffffff">
+  <script>
+  (() => {
+    const requestedTheme = new URLSearchParams(location.search).get('theme');
+    let storedTheme = 'light';
+    try { storedTheme = localStorage.getItem('portfolio-theme') || 'light'; } catch { /* URL preferences work without storage. */ }
+    const theme = requestedTheme === 'dark' || requestedTheme === 'light' ? requestedTheme : storedTheme === 'dark' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#191919' : '#ffffff';
+    if (requestedTheme === 'dark' || requestedTheme === 'light') {
+      try { localStorage.setItem('portfolio-theme', theme); } catch { /* The page already has the requested theme. */ }
+    }
+  })();
+  </script>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/vendor/modern-normalize.css">
+  <style>
+    @font-face{font-family:'Instrument Sans';src:url('../assets/fonts/InstrumentSans.ttf') format('truetype');font-style:normal;font-weight:400 700;font-display:swap}
+    :root{--background:#fff;--text:#242424;--muted:#6c6c6c;--line:#e8e8e8;--link:#2954c5;color-scheme:light}
+    :root[data-theme=dark]{--background:#191919;--text:#ededed;--muted:#a8a8a8;--line:#333;--link:#9bb5ff;color-scheme:dark}
+    *{box-sizing:border-box}html{scroll-padding-top:32px}body{margin:0;background:var(--background);color:var(--text);font:400 16px/1.75 'Instrument Sans',Arial,sans-serif;-webkit-font-smoothing:antialiased}a{color:var(--link);text-underline-offset:4px;text-decoration-thickness:1px}a:hover{text-decoration:none}button{font:inherit;color:inherit;cursor:pointer}a,button{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--link);outline-offset:5px}h1,h2,h3,p{margin:0}h1,h2,h3{line-height:1.25;font-weight:500;letter-spacing:-.025em}h1{font-size:42px;font-weight:400;letter-spacing:-.036em}h2{font-size:26px}h3{font-size:18px}strong{font-weight:600}.wrap{width:calc(100% - 48px);max-width:760px;margin-inline:auto}.skip{position:absolute;left:24px;top:-100px;padding:10px;background:var(--background);z-index:10}.skip:focus{top:10px}
+    .case-nav{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:32px;font-size:14px}.case-nav>a{text-decoration:none}.languages{display:flex;align-items:center;gap:3px}.languages button{border:0;background:none;padding:8px;min-width:44px;min-height:44px;color:var(--muted);font-size:13px}.languages button[aria-pressed=true]{color:var(--text);text-decoration:underline;text-underline-offset:5px}.languages>span{color:var(--muted)}
+    .case-intro{padding-block:58px 28px}.case-intro h1{margin-bottom:22px}.case-lead{max-width:70ch}.case-meta{margin-top:18px;color:var(--muted);font-size:14px}.case-layout{padding-top:0}.case-toc{display:flex;flex-wrap:wrap;gap:8px 24px;margin:8px 0 54px;font-size:14px}.case-toc a{text-decoration:none}.case-content{min-width:0}.case-section{margin-bottom:54px;scroll-margin-top:32px}.case-section h2{margin-bottom:22px}.case-section h3{margin-bottom:10px}.case-section p+p{margin-top:18px}.case-summary{margin-block:22px}.case-steps{list-style:none;margin:0;padding:0}.case-steps li{margin:26px 0}.case-notice{margin-top:28px}.case-downloads{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:24px;font-size:14px}
+    .table-scroll{overflow-x:auto;margin:25px 0;max-width:100%}.case-table{border-collapse:collapse;min-width:700px;width:100%;font-size:14px}.case-table caption{text-align:left;padding-bottom:14px;font-size:14px;color:var(--muted)}.case-table th,.case-table td{text-align:right;padding:12px 10px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}.case-table th:first-child{text-align:left;min-width:220px;padding-left:0}.case-table th:last-child,.case-table td:last-child{padding-right:0}.case-table thead th{font-weight:500}.case-table tbody th{font-weight:400}.case-table .selected-row th{font-weight:600}.metric-definitions{margin:22px 0}.metric-definitions p{font-size:14px;color:var(--muted)}
+    .case-example{margin-top:30px}.case-example h3{font-size:17px;line-height:1.5;font-weight:500;letter-spacing:0}.case-example .reference-value{margin:8px 0;font-size:18px;font-weight:600}.example-source{font-size:14px;color:var(--muted)}.example-source span{display:block;margin-bottom:5px}.case-limits{padding-left:20px;margin:0}.case-limits li{padding-left:4px;margin:14px 0}.case-end{padding:0 0 50px;display:flex;justify-content:space-between;gap:25px;font-size:14px}.case-end>span{color:var(--muted)}
+    @media(max-width:580px){.wrap{width:calc(100% - 40px)}.case-nav{padding-top:17px}.case-intro{padding-top:42px}h1{font-size:36px}h2{font-size:24px}.case-toc{gap:8px 20px;margin-bottom:42px}.case-section{margin-bottom:44px}.case-end{flex-direction:column;gap:16px}.case-downloads{flex-direction:column}}
+    @media print{.case-nav,.case-toc,.case-downloads,.skip{display:none}.wrap{width:100%;max-width:none}.case-intro{padding-top:0}.table-scroll{overflow:visible}.case-table{min-width:0;font-size:11px}.case-section{break-inside:avoid}body{color:#000;background:#fff}}
+  </style>
+</head>
+<body>
+<a class="skip" href="#main" data-es="Saltar al contenido">Skip to content</a>
+<header class="header"><div class="case-nav wrap"><a href="../index.html#rag" data-portfolio-link data-es="← Volver al portfolio">← Back to portfolio</a><div class="languages" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en" aria-pressed="true" aria-label="English">EN</button><span aria-hidden="true">/</span><button type="button" data-lang="es" aria-pressed="false" aria-label="Español">ES</button></div></div></header>
+<main id="main" class="wrap">
+  <section class="case-intro" aria-labelledby="case-title">
+    <h1 id="case-title" data-es="RAG financiero">Financial RAG</h1>
+    <p class="case-lead" data-es="Un proyecto independiente de RAG sobre reportes trimestrales de Alicorp en español: conservar el contexto de las tablas, encontrar el período correcto y medir qué información se recupera.">An independent RAG project over Alicorp's Spanish quarterly reports: preserve table context, find the right reporting period, and measure what gets retrieved.</p>
+    <p class="case-meta" data-es="Proyecto personal en desarrollo. Python, BM25, E5 multilingüe, PyMuPDF y Claude API.">Personal project in progress. Python, BM25, multilingual E5, PyMuPDF and Claude API.</p>
+  </section>
+  <div class="case-layout">
+    <nav class="case-toc" aria-label="Case study / Caso de estudio"><a href="#overview" data-es="Problema">Problem</a><a href="#method" data-es="Método">Method</a><a href="#results" data-es="Resultados">Results</a><a href="#examples" data-es="Ejemplos">Examples</a><a href="#limits" data-es="Limitaciones">Limitations</a></nav>
+    <div class="case-content">
+      <section class="case-section" id="overview" aria-labelledby="overview-title">
+        <h2 id="overview-title" data-es="Problema y alcance">Problem and scope</h2>
+        <p data-es="Los reportes financieros repiten vocabulario y estructura. Recuperar una página sobre ventas no basta si corresponde al trimestre equivocado. Y si la extracción del PDF separa cada celda, se pierde la relación entre una cifra y su concepto.">Financial reports repeat their vocabulary and structure. Finding a sales page is not enough if it belongs to the wrong quarter. And when PDF extraction separates every cell, a figure loses its relationship to the row it belongs to.</p>
+        <p data-es="Desarrollé un pipeline que combina extracción de PDF, recuperación híbrida y generación con citas. El trabajo presentado aquí mide la recuperación de páginas de referencia; todavía no demuestra la calidad de las respuestas generadas.">I built a pipeline combining PDF extraction, hybrid retrieval and citation-enabled generation. The work shown here measures reference-page retrieval; it does not yet establish the quality of generated answers.</p>
+        <p class="case-summary" data-es="El corpus contiene cuatro reportes de Alicorp, del 4T23 al 3T24, unas 100 páginas en total. De las 36 preguntas anotadas a mano, 32 tienen respuesta y cuatro no. El sistema recupera una página de referencia entre los seis primeros fragmentos en 29 de las 32 preguntas con respuesta.">The corpus contains four Alicorp reports, from 4Q23 to 3Q24, totalling about 100 pages. Of the 36 hand-annotated questions, 32 are answerable and four are not. The system retrieves a reference page among the first six chunks for 29 of the 32 answerable questions.</p>
+        <p data-es="El conjunto incluye 22 consultas de cifras, 7 explicaciones, 3 comparaciones entre períodos y 4 preguntas que los documentos no permiten responder. Las anotaciones y las decisiones de evaluación son de un único autor.">The set contains 22 figure lookups, 7 explanations, 3 cross-period comparisons and 4 questions the documents cannot answer. The annotations and evaluation decisions come from a single author.</p>
+      </section>
+      <section class="case-section" id="method" aria-labelledby="method-title">
+        <h2 id="method-title" data-es="Método">Method</h2>
+        <ol class="case-steps">
+          <li><div><h3 data-es="Reconstruir las filas de las tablas">Reconstruct table rows</h3><p data-es="PyMuPDF proporciona las coordenadas de las palabras. El parser reconstruye líneas visuales y convierte los espacios horizontales amplios en separadores de celdas. El objetivo es mantener juntos el concepto, el período y la cifra.">PyMuPDF provides word coordinates. The parser rebuilds visual lines and turns wide horizontal gaps into cell separators. The aim is to keep the label, period and figure together.</p></div></li>
+          <li><div><h3 data-es="Combinar dos formas de búsqueda">Combine two kinds of search</h3><p data-es="BM25 recupera términos y cifras exactos; los embeddings multilingual-e5-small ayudan con las paráfrasis. Reciprocal rank fusion (RRF) combina ambas listas de resultados.">BM25 retrieves exact terms and figures; multilingual-e5-small embeddings help with paraphrases. Reciprocal rank fusion (RRF) combines both result rankings.</p></div></li>
+          <li><div><h3 data-es="Identificar el período de la pregunta">Identify the question's period</h3><p data-es="Un detector basado en reglas reconoce expresiones como «3T24», «tercer trimestre de 2024» o rangos de fechas. El sistema restringe la búsqueda a los reportes correspondientes. Su capacidad de generalización sigue siendo una limitación.">A rule-based detector recognises phrases such as “3T24”, “tercer trimestre de 2024”, or date ranges. Search is restricted to matching reports. Generalisation beyond these phrasings remains a limitation.</p></div></li>
+          <li><div><h3 data-es="Generar con documentos y citas">Generate with documents and citations</h3><p data-es="Los fragmentos se envían a Claude como bloques de documento separados, con citas habilitadas. Las referencias se vinculan al reporte y a la página. El prompt pide abstenerse si no existe respuesta, pero ese comportamiento aún no se ha evaluado de extremo a extremo.">Chunks are passed to Claude as separate document blocks with citations enabled. References map back to a report and a page. The prompt requests abstention when an answer is missing, but that behaviour has not yet been evaluated end to end.</p></div></li>
+        </ol>
+      </section>
+      <section class="case-section" id="results" aria-labelledby="results-title">
+        <h2 id="results-title" data-es="Resultados de recuperación">Retrieval results</h2>
+        <p data-es="Resultados registrados para las 32 preguntas con respuesta, usando extracción que conserva la disposición de las tablas. Un acierto significa que al menos una página de referencia aparece entre los k primeros fragmentos recuperados.">Recorded results for the 32 answerable questions, using layout-aware extraction. A hit means at least one reference page appears among the top k retrieved chunks.</p>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Retrieval metrics / Métricas de recuperación">
+          <table class="case-table"><caption data-es="Extracción con disposición visual · resultados redondeados a 3 decimales">Layout-aware extraction · results rounded to 3 decimal places</caption><thead><tr><th scope="col" data-es="Método">Method</th><th scope="col">hit@1</th><th scope="col">hit@3</th><th scope="col">hit@6</th><th scope="col">MRR</th><th scope="col" data-es="Cobertura@6*">Coverage@6*</th></tr></thead><tbody>
+            <tr><th scope="row">BM25</th><td>0.312</td><td>0.531</td><td>0.781</td><td>0.465</td><td>0.528</td></tr>
+            <tr><th scope="row" data-es="Denso (e5-small)">Dense (e5-small)</th><td>0.156</td><td>0.562</td><td>0.750</td><td>0.381</td><td>0.556</td></tr>
+            <tr><th scope="row" data-es="Híbrido (RRF)">Hybrid (RRF)</th><td>0.188</td><td>0.625</td><td>0.875</td><td>0.431</td><td>0.528</td></tr>
+            <tr class="selected-row"><th scope="row" data-es="Híbrido + filtro de período">Hybrid + period filter</th><td>0.281</td><td>0.719</td><td><strong>0.906</strong></td><td>0.523</td><td>0.528</td></tr>
+            <tr><th scope="row" data-es="Híbrido + período + reranker">Hybrid + period + reranker</th><td>0.344</td><td>0.562</td><td>0.906</td><td>0.508</td><td>0.250</td></tr>
+          </tbody></table>
+        </div>
+        <div class="metric-definitions"><p data-es="&lt;strong&gt;MRR:&lt;/strong&gt; media del inverso del rango de la primera página de referencia, dentro de los 6 fragmentos recuperados; 0 si no aparece ninguna."><strong>MRR:</strong> mean reciprocal rank of the first reference page within the 6 retrieved chunks; zero when none is retrieved.</p><p data-es="&lt;strong&gt;*Cobertura@6:&lt;/strong&gt; proporción media de páginas de referencia recuperadas, solo en las 3 preguntas de comparación. Un acierto en hit@6 no implica haber recuperado todas las páginas necesarias."><strong>*Coverage@6:</strong> average share of reference pages retrieved, on the 3 comparison questions only. A hit@6 does not mean every required page was found.</p></div>
+        <p data-es="Con extracción visual, el híbrido con filtro de período pasa de 25/32 aciertos con BM25 a 29/32: cuatro preguntas adicionales. Frente al híbrido sin filtro, la mejora en hit@6 es de una pregunta. El reranker mejora la primera posición, pero reduce hit@3 y la cobertura de las comparaciones; permanece desactivado por defecto.">With layout-aware extraction, the period-filtered hybrid moves from BM25's 25/32 hits to 29/32: four additional questions. Compared with the unfiltered hybrid, the hit@6 gain is one question. The reranker improves first-position retrieval but lowers hit@3 and comparison coverage; it remains off by default.</p>
+        <div class="case-notice"><h3 data-es="Comparación con la extracción de texto plano">Comparison with plain-text extraction</h3><p data-es="La variante de texto plano con búsqueda híbrida y filtro de período alcanza hit@6 = 0.938 (30/32), frente a 0.906 (29/32) con extracción visual. También obtiene hit@3 = 0.781 y cobertura de comparaciones = 0.639. Conservar las filas tiene sentido para el contexto enviado al generador, pero estos datos no demuestran una mejora global de la recuperación ni de la calidad de respuesta. Una diferencia de una pregunta no es una conclusión robusta.">Plain-text extraction with hybrid search and a period filter reaches hit@6 = 0.938 (30/32), versus 0.906 (29/32) with layout-aware extraction. It also reaches hit@3 = 0.781 and comparison coverage = 0.639. Keeping rows together is useful context for the generator, but these data do not demonstrate an overall retrieval or answer-quality improvement. A one-question difference is not a robust conclusion.</p></div>
+        <div class="case-downloads"><a class="download-link" href="../assets/rag-retrieval.csv" download data-es="Descargar resultados completos (CSV)">Download all results (CSV)</a><a class="download-link" href="../assets/rag-evaluation.json" download data-es="Descargar las 36 preguntas (JSON)">Download all 36 questions (JSON)</a></div>
+      </section>
+      <section class="case-section" id="examples" aria-labelledby="examples-title">
+        <h2 id="examples-title" data-es="Ejemplos del conjunto de evaluación">Evaluation examples</h2>
+        <p data-es="Tres ejemplos del conjunto de evaluación. Las respuestas son referencias anotadas manualmente, no respuestas generadas en directo. Las preguntas se mantienen en español, el idioma del corpus. Cada enlace abre el reporte original en la página de referencia.">Three examples from the evaluation set. Answers are hand-annotated references, not live model responses. Questions stay in Spanish, the corpus language. Each link opens the original report at its reference page.</p>
+        <article class="case-example"><h3 lang="es">¿Cuáles fueron las ventas netas consolidadas de Alicorp en el 3T24?</h3><p class="reference-value" lang="es">S/ 3,213.9 millones</p><div class="example-source"><span data-es="Respuesta anotada · alicorp_3Q24 · p. 5">Annotated answer · alicorp_3Q24 · p. 5</span><a href="https://www.alicorp.com.pe/media/investor_kit/Alicorp_Earnings_Report_3Q24_ES_VF.pdf#page=5" target="_blank" rel="noopener" data-es="Consultar el reporte original (PDF)">Read the original report (PDF)</a></div></article>
+        <article class="case-example"><h3 lang="es">¿Cuál fue el EBITDA consolidado de Alicorp en el primer trimestre de 2024?</h3><p class="reference-value" lang="es">S/ 305.2 millones</p><div class="example-source"><span data-es="Respuesta anotada · alicorp_1Q24 · p. 5">Annotated answer · alicorp_1Q24 · p. 5</span><a href="https://www.alicorp.com.pe/media/investor_kit/Alicorp_Earnings_Report_1Q24_ES_VF.pdf#page=5" target="_blank" rel="noopener" data-es="Consultar el reporte original (PDF)">Read the original report (PDF)</a></div></article>
+        <article class="case-example"><h3 lang="es">¿Cuál fue el margen EBITDA consolidado en el 2T24?</h3><p class="reference-value">12.7%</p><div class="example-source"><span data-es="Respuesta anotada · alicorp_2Q24 · p. 5">Annotated answer · alicorp_2Q24 · p. 5</span><a href="https://www.alicorp.com.pe/media/investor_kit/Alicorp_Earnings_Report_2Q24_ES_VF.pdf#page=5" target="_blank" rel="noopener" data-es="Consultar el reporte original (PDF)">Read the original report (PDF)</a></div></article>
+      </section>
+      <section class="case-section" id="limits" aria-labelledby="limits-title">
+        <h2 id="limits-title" data-es="Limitaciones y próximos pasos">Limitations and next steps</h2>
+        <ul class="case-limits"><li data-es="Una empresa y cuatro trimestres no representan toda la documentación financiera. Hay que ampliar el corpus a otras empresas y formatos.">One company and four quarters do not represent financial documents in general. The corpus needs more companies and report formats.</li><li data-es="El conjunto es pequeño y fue redactado por una sola persona. Ampliarlo y contar con un segundo anotador permitiría comparaciones más fiables.">The evaluation set is small and single-author. A larger set and a second annotator would support more reliable comparisons.</li><li data-es="La detección de períodos se basa en reglas que cubren las formulaciones del conjunto de evaluación. No se ha demostrado su generalización a preguntas arbitrarias.">Period detection uses rules covering the evaluation-set phrasings. Generalisation to arbitrary questions has not been established.</li><li data-es="Las cuatro preguntas sin respuesta se excluyen de estas métricas de recuperación. La capacidad del modelo para abstenerse aún debe medirse.">The four unanswerable questions are excluded from these retrieval metrics. The model's ability to abstain still needs to be measured.</li><li data-es="La evaluación de respuestas está implementada, pero aún no hay resultados: exactitud numérica, precisión de las citas, presencia de la cifra en el pasaje citado y abstención. Se prevé comparar con el mismo modelo sin documentos.">Answer evaluation is implemented, but results are not yet available: numeric accuracy, citation precision, whether the cited passage contains the expected figure, and abstention. The planned baseline uses the same model without documents.</li></ul>
+        <div class="case-notice"><p data-es="&lt;strong&gt;Disponibilidad del proyecto.&lt;/strong&gt; El código fuente todavía no es público. Esta página comparte la metodología, los resultados registrados y el conjunto de preguntas para que el trabajo pueda examinarse desde ahora."><strong>Project availability.</strong> The source code is not public yet. This page shares the methodology, recorded results and question set so the work can already be inspected.</p></div>
+      </section>
+    </div>
+  </div>
+  <footer class="case-end"><a href="../index.html#work" data-portfolio-link data-es="← Volver a los proyectos">← Back to selected work</a><span>Stanislas Sassolas · <a href="mailto:stansasso@gmail.com">stansasso@gmail.com</a></span></footer>
+</main>
+<script>
+(() => {
+  'use strict';
+  const elements = [...document.querySelectorAll('[data-es]')];
+  const english = new Map(elements.map(element => [element, element.innerHTML]));
+  const buttons = [...document.querySelectorAll('[data-lang]')];
+  function setLanguage(language) {
+    const lang = language === 'es' ? 'es' : 'en';
+    document.documentElement.lang = lang;
+    elements.forEach(element => { element.innerHTML = lang === 'es' ? element.dataset.es : english.get(element); });
+    buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.lang === lang)));
+    document.title = lang === 'es' ? 'RAG financiero — Stanislas Sassolas' : 'Financial RAG — Stanislas Sassolas';
+    document.querySelector('meta[name="description"]').content = lang === 'es' ? 'Caso de estudio de RAG financiero: reportes en español, recuperación híbrida, resultados medidos y límites explícitos.' : 'A case study in financial RAG: Spanish reports, hybrid retrieval, measured results and explicit limitations.';
+    document.querySelectorAll('[data-portfolio-link]').forEach(link => {
+      const target = new URL(link.href, location.href);
+      target.searchParams.set('theme', document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+      target.searchParams.set('lang', lang);
+      link.href = target.href;
+    });
+    try {
+      const current = new URL(location.href);
+      if (current.searchParams.has('lang')) {
+        current.searchParams.set('lang', lang);
+        history.replaceState(history.state, '', current.href);
+      }
+    } catch { /* Navigation still carries the selected language when history is unavailable. */ }
+    try { localStorage.setItem('portfolio-language', lang); } catch { /* Language remains usable without storage. */ }
+  }
+  buttons.forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.lang)));
+  let storedLanguage = 'en';
+  try { storedLanguage = localStorage.getItem('portfolio-language') || 'en'; } catch { /* Default to English. */ }
+  const requestedLanguage = new URLSearchParams(location.search).get('lang');
+  setLanguage(requestedLanguage === 'en' || requestedLanguage === 'es' ? requestedLanguage : storedLanguage);
+})();
+</script>
+</body>
+</html>
